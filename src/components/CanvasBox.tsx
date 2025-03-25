@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { putTile } from "./util";
 
 enum TileType {
     horizontal = 'horizontal',
@@ -157,14 +158,6 @@ const CanvasBox = () => {
         // },
     }
 
-    function putTile( tiles: number[][], row: number, col: number, ctx: CanvasRenderingContext2D, size: number) {
-        tiles.forEach((tileData, index) => {
-            const sourceX = tileData[0] * tileSize;
-            const sourceY = tileData[1] * tileSize;
-            ctx.drawImage(tileAtlas, sourceX, sourceY, tileSize, tileSize, row + (index % size) * tileSize, col + Math.floor(index / size) * tileSize, tileSize, tileSize);
-        });
-    }
-
     function draw() {
         let mapIndex = 0;
         const canvas = document.querySelector('canvas');
@@ -212,7 +205,7 @@ const CanvasBox = () => {
                         console.error('Tile not found');
                         return;
                     }
-                    putTile(tile.tiles, row, col, ctx, tile.size);
+                    putTile(tile.tiles, row, col, ctx, tile.size, tileSize, tileAtlas);
                     mapIndex++;
                     continue;
                 } else {
