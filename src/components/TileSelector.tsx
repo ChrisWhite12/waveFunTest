@@ -1,12 +1,11 @@
 import { Box, Stack, TextField } from "@mui/material";
-import { MouseEvent, useEffect, useState } from "react";
+import { MouseEvent, useCallback, useEffect, useRef, useState } from "react";
 import { putTile } from "./util";
 
 interface TileSelectorProps {}
 
-
-const TileSelector = ({ }: TileSelectorProps) => {
-    const tileAtlas = new Image();
+const TileSelector = ({}: TileSelectorProps) => {
+    const tileAtlas = useRef(new Image()); // Use useRef to persist the tileAtlas object
     const tileSize = 16;
     const [tileBuildSize, setTileBuildSize] = useState(1);
     const [selectedTile, setSelectedTile] = useState({ x: 0, y: 0 });
@@ -14,30 +13,29 @@ const TileSelector = ({ }: TileSelectorProps) => {
     const draw = () => {
         const canvas = document.getElementById('tileSelector') as HTMLCanvasElement;
         const selectCanvas = document.getElementById('selectSquare') as HTMLCanvasElement;
-        canvas.width = tileAtlas.width;
-        canvas.height = tileAtlas.height;
-        selectCanvas.width = tileAtlas.width;
-        selectCanvas.height = tileAtlas.height;
+        canvas.width = tileAtlas.current.width;
+        canvas.height = tileAtlas.current.height;
+        selectCanvas.width = tileAtlas.current.width;
+        selectCanvas.height = tileAtlas.current.height;
         const context = canvas.getContext('2d');
         if (context) {
-            context.drawImage(tileAtlas, 0, 0);
+            context.drawImage(tileAtlas.current, 0, 0);
         }
 
-        for (let x = 0; x < tileAtlas.width; x += tileSize) {
+        for (let x = 0; x < tileAtlas.current.width; x += tileSize) {
             context?.beginPath();
             context?.moveTo(x, 0);
-            context?.lineTo(x, tileAtlas.height);
+            context?.lineTo(x, tileAtlas.current.height);
             context?.stroke();
         }
 
-        for (let y = 0; y < tileAtlas.height; y += tileSize) {
+        for (let y = 0; y < tileAtlas.current.height; y += tileSize) {
             context?.beginPath();
             context?.moveTo(0, y);
-            context?.lineTo(tileAtlas.width, y);
+            context?.lineTo(tileAtlas.current.width, y);
             context?.stroke();
         }
-
-    }
+    };
 
     const drawBuilder = () => {
         const canvas = document.getElementById('tileBuilder') as HTMLCanvasElement;
@@ -59,7 +57,7 @@ const TileSelector = ({ }: TileSelectorProps) => {
             context?.lineTo(canvas.width, y);
             context?.stroke();
         }
-    }
+    };
 
     const handleTileClick = (event: MouseEvent<HTMLCanvasElement>) => {
         const canvas = document.getElementById('tileSelector') as HTMLCanvasElement;
@@ -69,7 +67,7 @@ const TileSelector = ({ }: TileSelectorProps) => {
         const xPos = Math.floor(x / tileSize);
         const yPos = Math.floor(y / tileSize);
         setSelectedTile({ x: xPos, y: yPos });
-    }
+    };
 
     const handleTileSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = parseInt(event.target.value);
@@ -77,9 +75,9 @@ const TileSelector = ({ }: TileSelectorProps) => {
             return;
         }
         setTileBuildSize(parseInt(event.target.value));
-    }
+    };
 
-    const handleTileBuildClick = (event: MouseEvent<HTMLCanvasElement>) => {
+    const handleTileBuildClick = useCallback((event: MouseEvent<HTMLCanvasElement>) => {
         const canvas1 = document.getElementById('tileBuilder') as HTMLCanvasElement;
         const rect = canvas1.getBoundingClientRect();
         const x = event.clientX - rect.left;
@@ -87,23 +85,22 @@ const TileSelector = ({ }: TileSelectorProps) => {
         const xPos = Math.floor(x / tileSize);
         const yPos = Math.floor(y / tileSize);
         const ctx1 = canvas1.getContext('2d');
-        if (!ctx1) {
+        if (!ctx1 || !tileAtlas.current) {
+            console.error('TileAtlas not loaded or invalid context');
             return;
         }
-        ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
-        // TODO - having trouble placing the tile in the right position
-        putTile([[0,0]], xPos, yPos, ctx1, 1, tileSize, tileAtlas);
-    }
+        putTile([[selectedTile.x, selectedTile.y]], xPos * tileSize, yPos * tileSize, ctx1, 1, tileSize, tileAtlas.current);
+    }, [tileSize, selectedTile]);
 
     useEffect(() => {
-        tileAtlas.src = '/tileset_arranged.png';
-        tileAtlas.onload = () => {
-            console.log('tileAtlas loaded');
+        tileAtlas.current.src = '/tileset_arranged.png';
+        tileAtlas.current.onload = () => {
+            console.log('tileAtlas loaded successfully');
             draw();
         };
-        tileAtlas.onerror = (error) => {
-            console.error('Failed to load tileAtlas ', error);
-        };      
+        tileAtlas.current.onerror = (error) => {
+            console.error('Failed to load tileAtlas. Check the image path or server configuration.', error);
+        };
     }, []);
 
     useEffect(() => {
@@ -120,7 +117,6 @@ const TileSelector = ({ }: TileSelectorProps) => {
         ctx.lineWidth = 2;
         ctx.strokeRect(selectedTile.x * tileSize, selectedTile.y * tileSize, tileSize, tileSize);
     }, [selectedTile]);
-
 
     useEffect(() => {
         drawBuilder();
