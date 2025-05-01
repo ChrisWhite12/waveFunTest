@@ -13,7 +13,10 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as TilebuilderImport } from './routes/tilebuilder'
 import { Route as GeneratorImport } from './routes/generator'
+import { Route as RegisterImport } from './routes/Register'
+import { Route as LoginImport } from './routes/Login'
 import { Route as IndexImport } from './routes/index'
+import { Route as TilesetCreateImport } from './routes/tileset/create'
 
 // Create/Update Routes
 
@@ -29,9 +32,27 @@ const GeneratorRoute = GeneratorImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const RegisterRoute = RegisterImport.update({
+  id: '/Register',
+  path: '/Register',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LoginRoute = LoginImport.update({
+  id: '/Login',
+  path: '/Login',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TilesetCreateRoute = TilesetCreateImport.update({
+  id: '/tileset/create',
+  path: '/tileset/create',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -44,6 +65,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/Login': {
+      id: '/Login'
+      path: '/Login'
+      fullPath: '/Login'
+      preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/Register': {
+      id: '/Register'
+      path: '/Register'
+      fullPath: '/Register'
+      preLoaderRoute: typeof RegisterImport
       parentRoute: typeof rootRoute
     }
     '/generator': {
@@ -60,6 +95,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TilebuilderImport
       parentRoute: typeof rootRoute
     }
+    '/tileset/create': {
+      id: '/tileset/create'
+      path: '/tileset/create'
+      fullPath: '/tileset/create'
+      preLoaderRoute: typeof TilesetCreateImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -67,42 +109,76 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/Login': typeof LoginRoute
+  '/Register': typeof RegisterRoute
   '/generator': typeof GeneratorRoute
   '/tilebuilder': typeof TilebuilderRoute
+  '/tileset/create': typeof TilesetCreateRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/Login': typeof LoginRoute
+  '/Register': typeof RegisterRoute
   '/generator': typeof GeneratorRoute
   '/tilebuilder': typeof TilebuilderRoute
+  '/tileset/create': typeof TilesetCreateRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/Login': typeof LoginRoute
+  '/Register': typeof RegisterRoute
   '/generator': typeof GeneratorRoute
   '/tilebuilder': typeof TilebuilderRoute
+  '/tileset/create': typeof TilesetCreateRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/generator' | '/tilebuilder'
+  fullPaths:
+    | '/'
+    | '/Login'
+    | '/Register'
+    | '/generator'
+    | '/tilebuilder'
+    | '/tileset/create'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/generator' | '/tilebuilder'
-  id: '__root__' | '/' | '/generator' | '/tilebuilder'
+  to:
+    | '/'
+    | '/Login'
+    | '/Register'
+    | '/generator'
+    | '/tilebuilder'
+    | '/tileset/create'
+  id:
+    | '__root__'
+    | '/'
+    | '/Login'
+    | '/Register'
+    | '/generator'
+    | '/tilebuilder'
+    | '/tileset/create'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoginRoute: typeof LoginRoute
+  RegisterRoute: typeof RegisterRoute
   GeneratorRoute: typeof GeneratorRoute
   TilebuilderRoute: typeof TilebuilderRoute
+  TilesetCreateRoute: typeof TilesetCreateRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoginRoute: LoginRoute,
+  RegisterRoute: RegisterRoute,
   GeneratorRoute: GeneratorRoute,
   TilebuilderRoute: TilebuilderRoute,
+  TilesetCreateRoute: TilesetCreateRoute,
 }
 
 export const routeTree = rootRoute
@@ -116,18 +192,30 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/Login",
+        "/Register",
         "/generator",
-        "/tilebuilder"
+        "/tilebuilder",
+        "/tileset/create"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/Login": {
+      "filePath": "Login.jsx"
+    },
+    "/Register": {
+      "filePath": "Register.jsx"
     },
     "/generator": {
       "filePath": "generator.tsx"
     },
     "/tilebuilder": {
       "filePath": "tilebuilder.tsx"
+    },
+    "/tileset/create": {
+      "filePath": "tileset/create.tsx"
     }
   }
 }

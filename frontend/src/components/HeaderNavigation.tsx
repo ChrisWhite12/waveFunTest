@@ -14,6 +14,18 @@ const HeaderNavigation = () => {
             <Link href="/generator" className="[&.active]:font-bold">
                 Generator
             </Link>
+            <Link href="/tileset" className="[&.active]:font-bold">
+                TileSets
+            </Link>
+            <Link href="/tileset/create" className="[&.active]:font-bold">
+                Create TileSet
+            </Link>
+            <Link href="/login" className="[&.active]:font-bold">
+                Login
+            </Link>
+            <Link href="/register" className="[&.active]:font-bold">
+                Register
+            </Link>
         </Stack>
     )
 }
