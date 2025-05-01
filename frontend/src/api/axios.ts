@@ -1,5 +1,6 @@
 
 import axios from 'axios';
+import { ACCESS_TOKEN } from '../constants';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -12,7 +13,7 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem(ACCESS_TOKEN);
         if (token) {
             config.headers['Authorization'] = `Bearer ${token}`;
         }
@@ -31,6 +32,16 @@ export const createTileSet = async (data: FormData) => {
         return response.data;
     } catch (error) {
         console.error('Error creating TileSet:', error);
+        throw error;
+    }
+}
+
+export const getMyTileSets = async () => {
+    try {
+        const response = await axiosInstance.get('api/tilesets/my/');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching TileSets:', error);
         throw error;
     }
 }

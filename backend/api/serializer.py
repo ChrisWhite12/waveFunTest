@@ -24,6 +24,11 @@ class TilesetSerializer(serializers.ModelSerializer):
             "name": {"required": True},
         }
 
+    def create(self, validated_data):
+        print('validated data in tileset serializer:', validated_data)
+        validated_data["createdBy"] = self.context["request"].user.username
+        return super().create(validated_data)
+
 class TileGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = TileGroup
