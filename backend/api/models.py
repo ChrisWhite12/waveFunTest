@@ -7,6 +7,7 @@ class Tileset(models.Model):
     createdAt = models.DateTimeField(auto_now_add=True)
     updatedAt = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=255)
+    tile_size = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name

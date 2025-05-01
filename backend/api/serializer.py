@@ -17,11 +17,12 @@ class UserSerializer(serializers.ModelSerializer):
 class TilesetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tileset
-        fields = ["id", "image", "createdBy", "createdAt", "updatedAt", "name"]
+        fields = ["id", "image", "createdBy", "createdAt", "updatedAt", "name", "tile_size"]
         read_only_fields = ["createdBy", "createdAt", "updatedAt"]
         extra_kwargs = {
             "image": {"required": True},
             "name": {"required": True},
+            "tile_size": {"required": True},
         }
 
     def create(self, validated_data):
