@@ -1,6 +1,7 @@
-import { Box, MenuItem, Select, SelectChangeEvent, Stack, TextField } from "@mui/material";
+import { Box, Button, MenuItem, Select, SelectChangeEvent, Stack, TextField } from "@mui/material";
 import { MouseEvent, useCallback, useEffect, useRef, useState } from "react";
 import { putTile } from "./util"
+import { createTile, createTileGroup } from "../api/axios";
 
 interface TileSet {
     id: number;
@@ -8,11 +9,17 @@ interface TileSet {
     image: any;
 }
 
-interface TileSelectorProps {
-    data: TileSet[]
+interface Coords {
+    x: number;
+    y: number;
 }
 
-const TileSelector = ({data}: TileSelectorProps) => {
+interface TileSelectorProps {
+    data: TileSet[]
+    groupData: any[];
+}
+
+const TileSelector = ({data, groupData}: TileSelectorProps) => {
     const tileAtlas = useRef(new Image()); // Use useRef to persist the tileAtlas object
     const tileSize = 16;
     const [tileBuildSize, setTileBuildSize] = useState(1);
@@ -22,6 +29,8 @@ const TileSelector = ({data}: TileSelectorProps) => {
         label: tileSet.name,
     }));
     const [selectedTileSet, setSelectedTileSet] = useState<string>(options[0].value.toString());
+    const [builderData, setBuilderData] = useState<Coords[][]>([]);
+    const [selectedGroup, setSelectedGroup] = useState<string>('new');
 
     const draw = () => {
         const canvas = document.getElementById('tileSelector') as HTMLCanvasElement;
@@ -97,6 +106,11 @@ const TileSelector = ({data}: TileSelectorProps) => {
         const y = event.clientY - rect.top;
         const xPos = Math.floor(x / tileSize);
         const yPos = Math.floor(y / tileSize);
+        setBuilderData((prev) => {
+            const newData = [...prev];
+            newData[yPos][xPos] = { x: selectedTile.x, y: selectedTile.y };
+            return newData;
+        });
         const ctx1 = canvas1.getContext('2d');
         if (!ctx1 || !tileAtlas.current) {
             console.error('TileAtlas not loaded or invalid context');
@@ -105,6 +119,35 @@ const TileSelector = ({data}: TileSelectorProps) => {
         putTile([[selectedTile.x, selectedTile.y]], xPos * tileSize, yPos * tileSize, ctx1, 1, tileSize, tileAtlas.current);
     }, [tileSize, selectedTile]);
 
+    const handleCreateTile = async (id: string) => {
+        const formData = new FormData();
+        formData.append('tilesetId', selectedTileSet);
+        formData.append('tileGroupId', id);
+        formData.append('size', tileSize.toString());
+        formData.append('positionData', JSON.stringify(builderData));
+        formData.append('socketData', JSON.stringify({}));
+        try {
+            const response = await createTile(formData);
+        } catch (error) {
+            console.error('Error creating tile:', error);
+        }
+    }
+
+    const handleSave = async () => {
+        if (selectedGroup === 'new') {
+            const formData1 = new FormData();
+            formData1.append('name', 'New Group');
+            const groupId = await createTileGroup(formData1);
+            await handleCreateTile(groupId.id);
+        } else {
+            const group = groupData.find((group) => group.id == selectedGroup);
+            if (!group) {
+                console.error('Group not found');
+                return;
+            }
+            await handleCreateTile(group.id);
+        }
+    }
 
     useEffect(() => {
         const canvas = document.getElementById('selectSquare') as HTMLCanvasElement;
@@ -139,6 +182,7 @@ const TileSelector = ({data}: TileSelectorProps) => {
 
     useEffect(() => {
         drawBuilder();
+        setBuilderData(Array.from({ length: tileBuildSize }, () => Array.from({ length: tileBuildSize }, () => ({ x: 0, y: 0 }))));
     }, [tileBuildSize]);
 
     return (
@@ -146,9 +190,10 @@ const TileSelector = ({data}: TileSelectorProps) => {
             <Stack 
                 direction={'row'} 
                 sx={{ padding: 2, flex: 1}}
-                justifyContent={'space-between'}    
+                justifyContent={'space-between'}
+                spacing={2}
             >
-                <Stack direction={'column'} sx={{ position: 'relative', padding: 2, flex: 1 }}>
+                <Stack direction={'column'} spacing={2} sx={{ flex: 1 }}>
                     <Select
                         value={selectedTileSet}
                         onChange={handleTileSetChange}
@@ -159,9 +204,10 @@ const TileSelector = ({data}: TileSelectorProps) => {
                             </MenuItem>
                         ))}
                     </Select>
-                    <canvas id="tileSelector" style={{ position: "absolute" }}></canvas>
-                    <canvas id="selectSquare" onClick={handleTileClick} style={{ position: "absolute", zIndex: 1 }}></canvas>
                     <Box>
+                        {/* TODO center this */}
+                        <canvas id="tileSelector" style={{ position: "absolute" }}></canvas>
+                        <canvas id="selectSquare" onClick={handleTileClick} style={{ position: "absolute", zIndex: 1 }}></canvas>
                         <canvas id="tilePreview" width={tileSize} height={tileSize}></canvas>
                     </Box>
                 </Stack>
@@ -172,9 +218,25 @@ const TileSelector = ({data}: TileSelectorProps) => {
                         onChange={handleTileSizeChange}
                         type="number"
                     />
+                    <Select
+                        value={selectedGroup}
+                        onChange={(event) => setSelectedGroup(event.target.value)}
+                    >   
+                        <MenuItem value="new">New Group</MenuItem>
+                        {groupData.map((group) => (
+                            <MenuItem key={group.id} value={group.id}>
+                                {group.id} - {group.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
                     <Box>
                         <canvas id="tileBuilder" onClick={handleTileBuildClick} width={tileSize * tileBuildSize} height={tileSize * tileBuildSize}></canvas>
                     </Box>
+                    <Stack>
+                        <Button variant="contained" onClick={handleSave}>
+                            Save Tile
+                        </Button>
+                    </Stack>
                 </Stack>
             </Stack>
         </Stack>

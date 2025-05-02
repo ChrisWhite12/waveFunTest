@@ -47,7 +47,6 @@ const HeaderNavigation = () => {
             return;
         }
         const decoded: DecodedToken = jwtDecode(token);
-        console.log('decoded', decoded);
         setUserId(decoded.user_id);
         const tokenExpiration = decoded.exp;
         const now = Date.now() / 1000;

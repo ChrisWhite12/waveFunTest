@@ -45,3 +45,41 @@ export const getMyTileSets = async () => {
         throw error;
     }
 }
+
+export const createTile = async (data: FormData) => {
+    try {
+        const response = await axiosInstance.post('api/tiles/', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error creating Tile:', error);
+        throw error;
+    }
+}
+
+export const getTileGroups = async () => {
+    try {
+        const response = await axiosInstance.get('api/tilegroups/');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching TileGroups:', error);
+        throw error;
+    }
+}
+
+export const createTileGroup = async (data: FormData) => {
+    try {
+        const response = await axiosInstance.post('api/tilegroups/', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error creating TileGroup:', error);
+        throw error;
+    }
+}
