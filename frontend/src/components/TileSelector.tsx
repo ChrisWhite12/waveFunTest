@@ -1,14 +1,27 @@
-import { Box, Stack, TextField } from "@mui/material";
+import { Box, MenuItem, Select, SelectChangeEvent, Stack, TextField } from "@mui/material";
 import { MouseEvent, useCallback, useEffect, useRef, useState } from "react";
-import { putTile } from "./util";
+import { putTile } from "./util"
 
-interface TileSelectorProps {}
+interface TileSet {
+    id: number;
+    name: string;
+    image: any;
+}
 
-const TileSelector = ({}: TileSelectorProps) => {
+interface TileSelectorProps {
+    data: TileSet[]
+}
+
+const TileSelector = ({data}: TileSelectorProps) => {
     const tileAtlas = useRef(new Image()); // Use useRef to persist the tileAtlas object
     const tileSize = 16;
     const [tileBuildSize, setTileBuildSize] = useState(1);
     const [selectedTile, setSelectedTile] = useState({ x: 0, y: 0 });
+    const options = data.map((tileSet) => ({
+        value: tileSet.id,
+        label: tileSet.name,
+    }));
+    const [selectedTileSet, setSelectedTileSet] = useState<string>(options[0].value.toString());
 
     const draw = () => {
         const canvas = document.getElementById('tileSelector') as HTMLCanvasElement;
@@ -92,16 +105,6 @@ const TileSelector = ({}: TileSelectorProps) => {
         putTile([[selectedTile.x, selectedTile.y]], xPos * tileSize, yPos * tileSize, ctx1, 1, tileSize, tileAtlas.current);
     }, [tileSize, selectedTile]);
 
-    useEffect(() => {
-        tileAtlas.current.src = '/tileset_arranged.png';
-        tileAtlas.current.onload = () => {
-            console.log('tileAtlas loaded successfully');
-            draw();
-        };
-        tileAtlas.current.onerror = (error) => {
-            console.error('Failed to load tileAtlas. Check the image path or server configuration.', error);
-        };
-    }, []);
 
     useEffect(() => {
         const canvas = document.getElementById('selectSquare') as HTMLCanvasElement;
@@ -118,6 +121,22 @@ const TileSelector = ({}: TileSelectorProps) => {
         ctx.strokeRect(selectedTile.x * tileSize, selectedTile.y * tileSize, tileSize, tileSize);
     }, [selectedTile]);
 
+    const handleTileSetChange = (event: SelectChangeEvent) => {
+        const selectedValue = event.target.value as string;
+        setSelectedTileSet(selectedValue);
+        const selectedTileSet = data.find((tileSet) => tileSet.id.toString() == selectedValue);
+        if (selectedTileSet) {
+            tileAtlas.current = new Image();
+            tileAtlas.current.src = selectedTileSet.image;
+            tileAtlas.current.onload = () => {
+                draw();
+            };
+            tileAtlas.current.onerror = (error) => {
+                console.error('Failed to load tileAtlas. Check the image path or server configuration.', error);
+            };
+        }
+    }
+
     useEffect(() => {
         drawBuilder();
     }, [tileBuildSize]);
@@ -129,7 +148,17 @@ const TileSelector = ({}: TileSelectorProps) => {
                 sx={{ padding: 2, flex: 1}}
                 justifyContent={'space-between'}    
             >
-                <Stack sx={{ position: 'relative', padding: 2, flex: 1 }}>
+                <Stack direction={'column'} sx={{ position: 'relative', padding: 2, flex: 1 }}>
+                    <Select
+                        value={selectedTileSet}
+                        onChange={handleTileSetChange}
+                    >
+                        {options.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                            </MenuItem>
+                        ))}
+                    </Select>
                     <canvas id="tileSelector" style={{ position: "absolute" }}></canvas>
                     <canvas id="selectSquare" onClick={handleTileClick} style={{ position: "absolute", zIndex: 1 }}></canvas>
                     <Box>

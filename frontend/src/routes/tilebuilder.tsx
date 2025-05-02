@@ -20,11 +20,14 @@ function RouteComponent() {
     console.log('data', data);
   },[data])
 
+  if (!data) {
+    return <Typography>Loading...</Typography>
+  }
 
   return (
     <Stack>
       <Typography>Tile Builder</Typography>
-      <TileSelector />
+      <TileSelector data={data} />
     </Stack>
   )
 }
