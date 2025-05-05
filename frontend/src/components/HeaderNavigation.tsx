@@ -70,6 +70,9 @@ const HeaderNavigation = () => {
             <Link href="/tileset/create" className="[&.active]:font-bold">
                 Create TileSet
             </Link>
+            <Link href="/tilegroup/list" className="[&.active]:font-bold">
+                TileGroup List
+            </Link>
             {!isAuthorized && (
                 <>
                     <Link href="/login" className="[&.active]:font-bold">

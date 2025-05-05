@@ -83,3 +83,13 @@ export const createTileGroup = async (data: FormData) => {
         throw error;
     }
 }
+
+export const getTileGroup = async (id: string) => {
+    try {
+        const response = await axiosInstance.get(`api/tilegroups/${id}/`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching TileGroup:', error);
+        throw error;
+    }
+}
