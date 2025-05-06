@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from .serializer import TilesetSerializer, UserSerializer, TileGroupSerializer, TileSerializer
+from .serializer import TilesetSerializer, UserSerializer, TileGroupSerializer, TileSerializer, TileSocketSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from .models import Tileset, TileGroup, Tile
+from .models import Tileset, TileGroup, Tile, TileSocket
 from django.contrib.auth.models import User
 from rest_framework import generics
 from rest_framework.response import Response
@@ -71,3 +71,16 @@ class TileGroupDetailView(generics.RetrieveAPIView):
         }
 
         return Response(response_data)
+    
+class TileSocketListCreateView(generics.ListCreateAPIView):
+    queryset = TileSocket.objects.all()
+    serializer_class = TileSocketSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(createdBy=self.request.user.username)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print('TileSocketListCreateView context:', context)
+        return context

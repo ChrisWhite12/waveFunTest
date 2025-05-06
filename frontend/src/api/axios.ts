@@ -93,3 +93,27 @@ export const getTileGroup = async (id: string) => {
         throw error;
     }
 }
+
+export const createTileSocket = async (data: FormData) => {
+    try {
+        const response = await axiosInstance.post('api/tilesockets/', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error creating TileSocket:', error);
+        throw error;
+    }
+}
+
+export const getTileSockets = async () => {
+    try {
+        const response = await axiosInstance.get('api/tilesockets/');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching TileSockets:', error);
+        throw error;
+    }
+}

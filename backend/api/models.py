@@ -34,3 +34,10 @@ class Tile(models.Model):
     def __str__(self):
         return f"Tile {self.id} in {self.tilesetId.name}"
 
+class TileSocket(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    createdBy = models.CharField(max_length=255)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    updatedAt = models.DateTimeField(auto_now=True)
+

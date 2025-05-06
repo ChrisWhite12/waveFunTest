@@ -9,4 +9,5 @@ urlpatterns = [
     path("tilegroups/", views.TileGroupListCreateView.as_view(), name="tilegroup-list-create"),
     path("tilegroups/<int:pk>/", views.TileGroupDetailView.as_view(), name="tilegroup-detail"),
     path("tiles/", views.TileCreateView.as_view(), name="tile-create"),
+    path("tilesockets/", views.TileSocketListCreateView.as_view(), name="tilesocket-list-create"),
 ]

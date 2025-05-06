@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Tileset, TileGroup, Tile
+from .models import Tileset, TileGroup, Tile, TileSocket
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -51,3 +51,17 @@ class TileSerializer(serializers.ModelSerializer):
             "positionData": {"required": True},
             "socketData": {"required": True},
         }
+
+class TileSocketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TileSocket
+        fields = ["id", "name", "description"]
+        read_only_fields = ["createdBy", "createdAt", "updatedAt"]
+        extra_kwargs = {
+            "name": {"required": True},
+            "description": {"required": True},
+        }
+    def create(self, validated_data):
+        print('validated data in tilesocket serializer:', validated_data)
+        return super().create(validated_data)
+    

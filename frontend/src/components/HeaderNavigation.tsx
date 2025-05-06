@@ -73,6 +73,12 @@ const HeaderNavigation = () => {
             <Link href="/tilegroup/list" className="[&.active]:font-bold">
                 TileGroup List
             </Link>
+            <Link href="/tilesocket/list" className="[&.active]:font-bold">
+                TileSocket List
+            </Link>
+            <Link href="/tilesocket/create" className="[&.active]:font-bold">
+                Create TileSocket
+            </Link>
             {!isAuthorized && (
                 <>
                     <Link href="/login" className="[&.active]:font-bold">
