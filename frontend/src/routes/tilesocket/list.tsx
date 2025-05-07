@@ -15,7 +15,7 @@ export const Route = createFileRoute('/tilesocket/list')({
 
 function RouteComponent() {
     const { data } = useQuery<TileSocket[]>({
-        queryKey: ['groupTiles'],
+        queryKey: ['tileSockets'],
         queryFn: getTileSockets,
     })
 

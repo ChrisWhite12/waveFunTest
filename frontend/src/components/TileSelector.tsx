@@ -1,7 +1,9 @@
 import { Box, Button, MenuItem, Select, SelectChangeEvent, Stack, TextField } from "@mui/material";
 import { MouseEvent, useCallback, useEffect, useRef, useState } from "react";
 import { putTile } from "./util"
-import { createTile, createTileGroup } from "../api/axios";
+import { createTile, createTileGroup, getTileSockets } from "../api/axios";
+import { useQuery } from "@tanstack/react-query";
+import SocketSelector from "./SocketSelector";
 
 interface TileSet {
     id: number;
@@ -19,7 +21,18 @@ interface TileSelectorProps {
     groupData: any[];
 }
 
+interface TileSocket {
+    id: number
+    name: string
+    description: string
+}
+
 const TileSelector = ({data, groupData}: TileSelectorProps) => {
+    const { data: sockets } = useQuery<TileSocket[]>({
+        queryKey: ['tileSockets'],
+        queryFn: getTileSockets,
+    })
+
     const tileAtlas = useRef(new Image()); // Use useRef to persist the tileAtlas object
     const tileSize = 16;
     const [tileBuildSize, setTileBuildSize] = useState(1);
@@ -230,6 +243,14 @@ const TileSelector = ({data, groupData}: TileSelectorProps) => {
                         ))}
                     </Select>
                     <Box>
+                        <SocketSelector
+                            options={sockets ?? []}
+                            handleSocketChange={(event: SelectChangeEvent) => {
+                                // TODO - handle socket change
+                                console.log(event.target.value);
+                            }}
+                        />
+                        {/* TODO - add the socket selectors here */}
                         <canvas id="tileBuilder" onClick={handleTileBuildClick} width={tileSize * tileBuildSize} height={tileSize * tileBuildSize}></canvas>
                     </Box>
                     <Stack>
