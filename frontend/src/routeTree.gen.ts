@@ -17,8 +17,14 @@ import { Route as RegisterImport } from './routes/Register'
 import { Route as LoginImport } from './routes/Login'
 import { Route as TilesocketListImport } from './routes/tilesocket/list'
 import { Route as TilesocketCreateImport } from './routes/tilesocket/create'
+import { Route as TilesetListImport } from './routes/tileset/list'
 import { Route as TilesetCreateImport } from './routes/tileset/create'
 import { Route as TilegroupListImport } from './routes/tilegroup/list'
+import { Route as TilegroupCreateImport } from './routes/tilegroup/create'
+import { Route as TileListImport } from './routes/tile/list'
+import { Route as TileCreateImport } from './routes/tile/create'
+import { Route as TilesocketDetailIdImport } from './routes/tilesocket/detail.$id'
+import { Route as TilesetDetailIdImport } from './routes/tileset/detail.$id'
 import { Route as TilegroupDetailIdImport } from './routes/tilegroup/detail.$id'
 
 // Create/Update Routes
@@ -59,6 +65,12 @@ const TilesocketCreateRoute = TilesocketCreateImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const TilesetListRoute = TilesetListImport.update({
+  id: '/tileset/list',
+  path: '/tileset/list',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const TilesetCreateRoute = TilesetCreateImport.update({
   id: '/tileset/create',
   path: '/tileset/create',
@@ -68,6 +80,36 @@ const TilesetCreateRoute = TilesetCreateImport.update({
 const TilegroupListRoute = TilegroupListImport.update({
   id: '/tilegroup/list',
   path: '/tilegroup/list',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TilegroupCreateRoute = TilegroupCreateImport.update({
+  id: '/tilegroup/create',
+  path: '/tilegroup/create',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TileListRoute = TileListImport.update({
+  id: '/tile/list',
+  path: '/tile/list',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TileCreateRoute = TileCreateImport.update({
+  id: '/tile/create',
+  path: '/tile/create',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TilesocketDetailIdRoute = TilesocketDetailIdImport.update({
+  id: '/tilesocket/detail/$id',
+  path: '/tilesocket/detail/$id',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TilesetDetailIdRoute = TilesetDetailIdImport.update({
+  id: '/tileset/detail/$id',
+  path: '/tileset/detail/$id',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -109,6 +151,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TilebuilderImport
       parentRoute: typeof rootRoute
     }
+    '/tile/create': {
+      id: '/tile/create'
+      path: '/tile/create'
+      fullPath: '/tile/create'
+      preLoaderRoute: typeof TileCreateImport
+      parentRoute: typeof rootRoute
+    }
+    '/tile/list': {
+      id: '/tile/list'
+      path: '/tile/list'
+      fullPath: '/tile/list'
+      preLoaderRoute: typeof TileListImport
+      parentRoute: typeof rootRoute
+    }
+    '/tilegroup/create': {
+      id: '/tilegroup/create'
+      path: '/tilegroup/create'
+      fullPath: '/tilegroup/create'
+      preLoaderRoute: typeof TilegroupCreateImport
+      parentRoute: typeof rootRoute
+    }
     '/tilegroup/list': {
       id: '/tilegroup/list'
       path: '/tilegroup/list'
@@ -121,6 +184,13 @@ declare module '@tanstack/react-router' {
       path: '/tileset/create'
       fullPath: '/tileset/create'
       preLoaderRoute: typeof TilesetCreateImport
+      parentRoute: typeof rootRoute
+    }
+    '/tileset/list': {
+      id: '/tileset/list'
+      path: '/tileset/list'
+      fullPath: '/tileset/list'
+      preLoaderRoute: typeof TilesetListImport
       parentRoute: typeof rootRoute
     }
     '/tilesocket/create': {
@@ -144,6 +214,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TilegroupDetailIdImport
       parentRoute: typeof rootRoute
     }
+    '/tileset/detail/$id': {
+      id: '/tileset/detail/$id'
+      path: '/tileset/detail/$id'
+      fullPath: '/tileset/detail/$id'
+      preLoaderRoute: typeof TilesetDetailIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/tilesocket/detail/$id': {
+      id: '/tilesocket/detail/$id'
+      path: '/tilesocket/detail/$id'
+      fullPath: '/tilesocket/detail/$id'
+      preLoaderRoute: typeof TilesocketDetailIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -154,11 +238,17 @@ export interface FileRoutesByFullPath {
   '/Register': typeof RegisterRoute
   '/generator': typeof GeneratorRoute
   '/tilebuilder': typeof TilebuilderRoute
+  '/tile/create': typeof TileCreateRoute
+  '/tile/list': typeof TileListRoute
+  '/tilegroup/create': typeof TilegroupCreateRoute
   '/tilegroup/list': typeof TilegroupListRoute
   '/tileset/create': typeof TilesetCreateRoute
+  '/tileset/list': typeof TilesetListRoute
   '/tilesocket/create': typeof TilesocketCreateRoute
   '/tilesocket/list': typeof TilesocketListRoute
   '/tilegroup/detail/$id': typeof TilegroupDetailIdRoute
+  '/tileset/detail/$id': typeof TilesetDetailIdRoute
+  '/tilesocket/detail/$id': typeof TilesocketDetailIdRoute
 }
 
 export interface FileRoutesByTo {
@@ -166,11 +256,17 @@ export interface FileRoutesByTo {
   '/Register': typeof RegisterRoute
   '/generator': typeof GeneratorRoute
   '/tilebuilder': typeof TilebuilderRoute
+  '/tile/create': typeof TileCreateRoute
+  '/tile/list': typeof TileListRoute
+  '/tilegroup/create': typeof TilegroupCreateRoute
   '/tilegroup/list': typeof TilegroupListRoute
   '/tileset/create': typeof TilesetCreateRoute
+  '/tileset/list': typeof TilesetListRoute
   '/tilesocket/create': typeof TilesocketCreateRoute
   '/tilesocket/list': typeof TilesocketListRoute
   '/tilegroup/detail/$id': typeof TilegroupDetailIdRoute
+  '/tileset/detail/$id': typeof TilesetDetailIdRoute
+  '/tilesocket/detail/$id': typeof TilesocketDetailIdRoute
 }
 
 export interface FileRoutesById {
@@ -179,11 +275,17 @@ export interface FileRoutesById {
   '/Register': typeof RegisterRoute
   '/generator': typeof GeneratorRoute
   '/tilebuilder': typeof TilebuilderRoute
+  '/tile/create': typeof TileCreateRoute
+  '/tile/list': typeof TileListRoute
+  '/tilegroup/create': typeof TilegroupCreateRoute
   '/tilegroup/list': typeof TilegroupListRoute
   '/tileset/create': typeof TilesetCreateRoute
+  '/tileset/list': typeof TilesetListRoute
   '/tilesocket/create': typeof TilesocketCreateRoute
   '/tilesocket/list': typeof TilesocketListRoute
   '/tilegroup/detail/$id': typeof TilegroupDetailIdRoute
+  '/tileset/detail/$id': typeof TilesetDetailIdRoute
+  '/tilesocket/detail/$id': typeof TilesocketDetailIdRoute
 }
 
 export interface FileRouteTypes {
@@ -193,33 +295,51 @@ export interface FileRouteTypes {
     | '/Register'
     | '/generator'
     | '/tilebuilder'
+    | '/tile/create'
+    | '/tile/list'
+    | '/tilegroup/create'
     | '/tilegroup/list'
     | '/tileset/create'
+    | '/tileset/list'
     | '/tilesocket/create'
     | '/tilesocket/list'
     | '/tilegroup/detail/$id'
+    | '/tileset/detail/$id'
+    | '/tilesocket/detail/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/Login'
     | '/Register'
     | '/generator'
     | '/tilebuilder'
+    | '/tile/create'
+    | '/tile/list'
+    | '/tilegroup/create'
     | '/tilegroup/list'
     | '/tileset/create'
+    | '/tileset/list'
     | '/tilesocket/create'
     | '/tilesocket/list'
     | '/tilegroup/detail/$id'
+    | '/tileset/detail/$id'
+    | '/tilesocket/detail/$id'
   id:
     | '__root__'
     | '/Login'
     | '/Register'
     | '/generator'
     | '/tilebuilder'
+    | '/tile/create'
+    | '/tile/list'
+    | '/tilegroup/create'
     | '/tilegroup/list'
     | '/tileset/create'
+    | '/tileset/list'
     | '/tilesocket/create'
     | '/tilesocket/list'
     | '/tilegroup/detail/$id'
+    | '/tileset/detail/$id'
+    | '/tilesocket/detail/$id'
   fileRoutesById: FileRoutesById
 }
 
@@ -228,11 +348,17 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
   GeneratorRoute: typeof GeneratorRoute
   TilebuilderRoute: typeof TilebuilderRoute
+  TileCreateRoute: typeof TileCreateRoute
+  TileListRoute: typeof TileListRoute
+  TilegroupCreateRoute: typeof TilegroupCreateRoute
   TilegroupListRoute: typeof TilegroupListRoute
   TilesetCreateRoute: typeof TilesetCreateRoute
+  TilesetListRoute: typeof TilesetListRoute
   TilesocketCreateRoute: typeof TilesocketCreateRoute
   TilesocketListRoute: typeof TilesocketListRoute
   TilegroupDetailIdRoute: typeof TilegroupDetailIdRoute
+  TilesetDetailIdRoute: typeof TilesetDetailIdRoute
+  TilesocketDetailIdRoute: typeof TilesocketDetailIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -240,11 +366,17 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterRoute: RegisterRoute,
   GeneratorRoute: GeneratorRoute,
   TilebuilderRoute: TilebuilderRoute,
+  TileCreateRoute: TileCreateRoute,
+  TileListRoute: TileListRoute,
+  TilegroupCreateRoute: TilegroupCreateRoute,
   TilegroupListRoute: TilegroupListRoute,
   TilesetCreateRoute: TilesetCreateRoute,
+  TilesetListRoute: TilesetListRoute,
   TilesocketCreateRoute: TilesocketCreateRoute,
   TilesocketListRoute: TilesocketListRoute,
   TilegroupDetailIdRoute: TilegroupDetailIdRoute,
+  TilesetDetailIdRoute: TilesetDetailIdRoute,
+  TilesocketDetailIdRoute: TilesocketDetailIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -261,11 +393,17 @@ export const routeTree = rootRoute
         "/Register",
         "/generator",
         "/tilebuilder",
+        "/tile/create",
+        "/tile/list",
+        "/tilegroup/create",
         "/tilegroup/list",
         "/tileset/create",
+        "/tileset/list",
         "/tilesocket/create",
         "/tilesocket/list",
-        "/tilegroup/detail/$id"
+        "/tilegroup/detail/$id",
+        "/tileset/detail/$id",
+        "/tilesocket/detail/$id"
       ]
     },
     "/Login": {
@@ -280,11 +418,23 @@ export const routeTree = rootRoute
     "/tilebuilder": {
       "filePath": "tilebuilder.tsx"
     },
+    "/tile/create": {
+      "filePath": "tile/create.tsx"
+    },
+    "/tile/list": {
+      "filePath": "tile/list.tsx"
+    },
+    "/tilegroup/create": {
+      "filePath": "tilegroup/create.tsx"
+    },
     "/tilegroup/list": {
       "filePath": "tilegroup/list.tsx"
     },
     "/tileset/create": {
       "filePath": "tileset/create.tsx"
+    },
+    "/tileset/list": {
+      "filePath": "tileset/list.tsx"
     },
     "/tilesocket/create": {
       "filePath": "tilesocket/create.tsx"
@@ -294,6 +444,12 @@ export const routeTree = rootRoute
     },
     "/tilegroup/detail/$id": {
       "filePath": "tilegroup/detail.$id.tsx"
+    },
+    "/tileset/detail/$id": {
+      "filePath": "tileset/detail.$id.tsx"
+    },
+    "/tilesocket/detail/$id": {
+      "filePath": "tilesocket/detail.$id.tsx"
     }
   }
 }

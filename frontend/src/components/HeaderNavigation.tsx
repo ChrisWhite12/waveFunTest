@@ -61,23 +61,17 @@ const HeaderNavigation = () => {
     
     return (
         <Stack direction="row" spacing={2} justifyContent={'space-around'}>
-            <Link href="/tilebuilder" className="[&.active]:font-bold">
-                Tile Builder
+            <Link href="/tile/list" className="[&.active]:font-bold">
+                Tile
             </Link>
-            <Link href="/generator" className="[&.active]:font-bold">
-                Generator
-            </Link>
-            <Link href="/tileset/create" className="[&.active]:font-bold">
-                Create TileSet
+            <Link href="/tileset/list" className="[&.active]:font-bold">
+                TileSet
             </Link>
             <Link href="/tilegroup/list" className="[&.active]:font-bold">
-                TileGroup List
+                TileGroup
             </Link>
             <Link href="/tilesocket/list" className="[&.active]:font-bold">
-                TileSocket List
-            </Link>
-            <Link href="/tilesocket/create" className="[&.active]:font-bold">
-                Create TileSocket
+                TileSocket
             </Link>
             {!isAuthorized && (
                 <>

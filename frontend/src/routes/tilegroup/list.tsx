@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { getTileGroups } from '../../api/axios'
-import { Card, Stack, Typography } from '@mui/material'
+import { Button, Card, Stack, Typography } from '@mui/material'
+import ListCardItem from '../../components/ListCardItem'
 
 export interface TileGroup {
   id: number
@@ -28,18 +29,33 @@ function RouteComponent() {
     }
   }
 
+  const handleCreate = () => {
+    navigate({ to: '/tilegroup/create' })
+  }
+
   if (!groupData || groupData.length === 0) {
     return <Typography>Loading...</Typography>
   }
 
+  // TODO add create button
+  // TODO add delete button
+  // TODO add edit link
+  // TODO add loading state
+  // TODO add error handling
+
   return (
     <div>
       <h1>Tile Group List</h1>
+      <Stack spacing={2} direction='row' justifyContent='end' sx={{ py: 2 }}>
+          <Button variant='contained' onClick={handleCreate}>
+              Create Tile Group
+          </Button>
+      </Stack>
       <Stack spacing={2} direction='column'>
         {groupData.map((group) => (
-          <Card key={group.id} sx={{ padding: 2 }} onClick={() => handleClick(group.id.toString())}>
+          <ListCardItem handleClick={handleClick} key={group.id}>
             <Typography variant='h5'>{group.name}</Typography>
-          </Card>
+          </ListCardItem>
         ))}
       </Stack>
       
