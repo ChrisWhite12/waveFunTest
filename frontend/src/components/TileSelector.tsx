@@ -4,6 +4,7 @@ import { putTile } from "./util"
 import { createTile, createTileGroup, getTileSockets } from "../api";
 import { useQuery } from "@tanstack/react-query";
 import SocketSelector from "./SocketSelector";
+import SocketGroup from "./SocketGroup";
 
 interface TileSet {
     id: number;
@@ -27,7 +28,7 @@ interface TileSocket {
     description: string
 }
 
-const TileSelector = ({data, groupData}: TileSelectorProps) => {
+const TileSelector = ({ data, groupData }: TileSelectorProps) => {
     const { data: sockets } = useQuery<TileSocket[]>({
         queryKey: ['tileSockets'],
         queryFn: getTileSockets,
@@ -200,9 +201,9 @@ const TileSelector = ({data, groupData}: TileSelectorProps) => {
 
     return (
         <Stack direction='column' spacing={2} sx={{ flex: 1, minHeight: '600px' }}>
-            <Stack 
-                direction={'row'} 
-                sx={{ padding: 2, flex: 1}}
+            <Stack
+                direction={'row'}
+                sx={{ padding: 2, flex: 1 }}
                 justifyContent={'space-between'}
                 spacing={2}
             >
@@ -217,16 +218,16 @@ const TileSelector = ({data, groupData}: TileSelectorProps) => {
                             </MenuItem>
                         ))}
                     </Select>
-                    <Box>
-                        {/* TODO center this */}
-                        <canvas id="tileSelector" style={{ position: "absolute" }}></canvas>
-                        <canvas id="selectSquare" onClick={handleTileClick} style={{ position: "absolute", zIndex: 1 }}></canvas>
-                        <canvas id="tilePreview" width={tileSize} height={tileSize}></canvas>
-                    </Box>
+                    <Stack direction={'row'} justifyContent={'center'}>
+                            {/* TODO center this */}
+                            <canvas id="tileSelector" style={{ position: "absolute" }}></canvas>
+                            <canvas id="selectSquare" onClick={handleTileClick} style={{ position: "absolute", zIndex: 1 }}></canvas>
+                            <canvas id="tilePreview" width={tileSize} height={tileSize}></canvas>
+                    </Stack>
                 </Stack>
                 <Stack spacing={2} sx={{ flex: 1 }}>
-                    <TextField 
-                        label="Tile Size" 
+                    <TextField
+                        label="Tile Size"
                         value={tileBuildSize}
                         onChange={handleTileSizeChange}
                         type="number"
@@ -234,7 +235,7 @@ const TileSelector = ({data, groupData}: TileSelectorProps) => {
                     <Select
                         value={selectedGroup}
                         onChange={(event) => setSelectedGroup(event.target.value)}
-                    >   
+                    >
                         <MenuItem value="new">New Group</MenuItem>
                         {groupData.map((group) => (
                             <MenuItem key={group.id} value={group.id}>
@@ -243,15 +244,13 @@ const TileSelector = ({data, groupData}: TileSelectorProps) => {
                         ))}
                     </Select>
                     <Box>
-                        <SocketSelector
+                        <SocketGroup
                             options={sockets ?? []}
-                            handleSocketChange={(event: SelectChangeEvent) => {
-                                // TODO - handle socket change
-                                console.log(event.target.value);
-                            }}
+                            tileSize={tileBuildSize}
+                            onClick={handleTileBuildClick}
+                            width={tileSize * tileBuildSize}
+                            height={tileSize * tileBuildSize}
                         />
-                        {/* TODO - add the socket selectors here */}
-                        <canvas id="tileBuilder" onClick={handleTileBuildClick} width={tileSize * tileBuildSize} height={tileSize * tileBuildSize}></canvas>
                     </Box>
                     <Stack>
                         <Button variant="contained" onClick={handleSave}>

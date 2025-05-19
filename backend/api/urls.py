@@ -1,15 +1,23 @@
 
 from django.contrib import admin
 from django.urls import path
-from . import views
+from .views.tile import TileCreateView, TileDetailView
+from .views.tileSet import TileSetListCreateView, TileSetDetailView
+from .views.tileSocket import TileSocketListCreateView, TileSocketDetailView
+from .views.tileGroup import TileGroupListCreateView, TileGroupDetailView
 
 urlpatterns = [
-    path("tilesets/", views.TileSetListCreateView.as_view(), name="tileset-list-create"),
-    path("tilesets/my/", views.MyTilesetListView.as_view(), name="my-tileset-list"),
-    path("tilegroups/", views.TileGroupListCreateView.as_view(), name="tilegroup-list-create"),
-    path("tilegroups/<int:pk>/", views.TileGroupDetailView.as_view(), name="tilegroup-detail"),
-    path("tiles/", views.TileCreateView.as_view(), name="tile-create"),
-    path("tilesockets/", views.TileSocketListCreateView.as_view(), name="tilesocket-list-create"),
+    path("tiles/", TileCreateView.as_view(), name="tile-create"),
+    path("tiles/<int:pk>/", TileDetailView.as_view(), name="tile-detail"),
+
+    path("tilesets/", TileSetListCreateView.as_view(), name="tileset-list-create"),
+    path("tilesets/<int:pk>/", TileSetDetailView.as_view(), name="tileset-detail"),
+    
+    path("tilesockets/", TileSocketListCreateView.as_view(), name="tilesocket-list-create"),
+    path("tilesockets/<int:pk>/", TileSocketDetailView.as_view(), name="tilesocket-detail"),
+
+    path("tilegroups/", TileGroupListCreateView.as_view(), name="tilegroup-list-create"),
+    path("tilegroups/<int:pk>/", TileGroupDetailView.as_view(), name="tilegroup-detail"),
 ]
 
 # TODO - get one/many tileInfo, update tileInfo, delete tileInfo

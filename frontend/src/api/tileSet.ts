@@ -1,8 +1,17 @@
 import { axiosInstance } from "./axios";
 
+export interface TileSet {
+    id: number;
+    name: string;
+    description: string;
+    image: string;
+    created_at: string;
+    updated_at: string;
+}
+
 export const getMyTileSets = async () => {
     try {
-        const response = await axiosInstance.get('api/tilesets/my/');
+        const response = await axiosInstance.get('api/tilesets/');
         return response.data;
     } catch (error) {
         console.error('Error fetching TileSets:', error);
@@ -54,6 +63,17 @@ export const updateTileSet = async (id: string, data: FormData) => {
         return response.data;
     } catch (error) {
         console.error('Error updating TileSet:', error);
+        throw error;
+    }
+}
+
+
+export const deleteTileSet = async (id: string) => {
+    try {
+        const response = await axiosInstance.delete(`api/tilesets/${id}/`);
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting TileSet:', error);
         throw error;
     }
 }

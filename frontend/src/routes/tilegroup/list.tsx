@@ -52,8 +52,8 @@ function RouteComponent() {
           </Button>
       </Stack>
       <Stack spacing={2} direction='column'>
-        {groupData.map((group) => (
-          <ListCardItem handleClick={handleClick} key={group.id}>
+        {groupData?.map((group) => (
+          <ListCardItem handleClick={() => handleClick(group.id.toString())} key={group.id}>
             <Typography variant='h5'>{group.name}</Typography>
           </ListCardItem>
         ))}

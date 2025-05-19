@@ -17,7 +17,7 @@ class TileGroupListCreateView(generics.ListCreateAPIView):
         print('TileGroupListCreateView context:', context)
         return context
     
-class TileGroupDetailView(generics.RetrieveAPIView):
+class TileGroupDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = TileGroup.objects.all()
     serializer_class = TileGroupSerializer
     permission_classes = [IsAuthenticated]
@@ -38,6 +38,5 @@ class TileGroupDetailView(generics.RetrieveAPIView):
         }
 
         return Response(response_data)
-    
-    # TODO - get update group, delete group
+
     

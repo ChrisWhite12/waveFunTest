@@ -26,6 +26,7 @@ import { Route as TileCreateImport } from './routes/tile/create'
 import { Route as TilesocketDetailIdImport } from './routes/tilesocket/detail.$id'
 import { Route as TilesetDetailIdImport } from './routes/tileset/detail.$id'
 import { Route as TilegroupDetailIdImport } from './routes/tilegroup/detail.$id'
+import { Route as TileDetailIdImport } from './routes/tile/detail.$id'
 
 // Create/Update Routes
 
@@ -119,6 +120,12 @@ const TilegroupDetailIdRoute = TilegroupDetailIdImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const TileDetailIdRoute = TileDetailIdImport.update({
+  id: '/tile/detail/$id',
+  path: '/tile/detail/$id',
+  getParentRoute: () => rootRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -207,6 +214,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TilesocketListImport
       parentRoute: typeof rootRoute
     }
+    '/tile/detail/$id': {
+      id: '/tile/detail/$id'
+      path: '/tile/detail/$id'
+      fullPath: '/tile/detail/$id'
+      preLoaderRoute: typeof TileDetailIdImport
+      parentRoute: typeof rootRoute
+    }
     '/tilegroup/detail/$id': {
       id: '/tilegroup/detail/$id'
       path: '/tilegroup/detail/$id'
@@ -246,6 +260,7 @@ export interface FileRoutesByFullPath {
   '/tileset/list': typeof TilesetListRoute
   '/tilesocket/create': typeof TilesocketCreateRoute
   '/tilesocket/list': typeof TilesocketListRoute
+  '/tile/detail/$id': typeof TileDetailIdRoute
   '/tilegroup/detail/$id': typeof TilegroupDetailIdRoute
   '/tileset/detail/$id': typeof TilesetDetailIdRoute
   '/tilesocket/detail/$id': typeof TilesocketDetailIdRoute
@@ -264,6 +279,7 @@ export interface FileRoutesByTo {
   '/tileset/list': typeof TilesetListRoute
   '/tilesocket/create': typeof TilesocketCreateRoute
   '/tilesocket/list': typeof TilesocketListRoute
+  '/tile/detail/$id': typeof TileDetailIdRoute
   '/tilegroup/detail/$id': typeof TilegroupDetailIdRoute
   '/tileset/detail/$id': typeof TilesetDetailIdRoute
   '/tilesocket/detail/$id': typeof TilesocketDetailIdRoute
@@ -283,6 +299,7 @@ export interface FileRoutesById {
   '/tileset/list': typeof TilesetListRoute
   '/tilesocket/create': typeof TilesocketCreateRoute
   '/tilesocket/list': typeof TilesocketListRoute
+  '/tile/detail/$id': typeof TileDetailIdRoute
   '/tilegroup/detail/$id': typeof TilegroupDetailIdRoute
   '/tileset/detail/$id': typeof TilesetDetailIdRoute
   '/tilesocket/detail/$id': typeof TilesocketDetailIdRoute
@@ -303,6 +320,7 @@ export interface FileRouteTypes {
     | '/tileset/list'
     | '/tilesocket/create'
     | '/tilesocket/list'
+    | '/tile/detail/$id'
     | '/tilegroup/detail/$id'
     | '/tileset/detail/$id'
     | '/tilesocket/detail/$id'
@@ -320,6 +338,7 @@ export interface FileRouteTypes {
     | '/tileset/list'
     | '/tilesocket/create'
     | '/tilesocket/list'
+    | '/tile/detail/$id'
     | '/tilegroup/detail/$id'
     | '/tileset/detail/$id'
     | '/tilesocket/detail/$id'
@@ -337,6 +356,7 @@ export interface FileRouteTypes {
     | '/tileset/list'
     | '/tilesocket/create'
     | '/tilesocket/list'
+    | '/tile/detail/$id'
     | '/tilegroup/detail/$id'
     | '/tileset/detail/$id'
     | '/tilesocket/detail/$id'
@@ -356,6 +376,7 @@ export interface RootRouteChildren {
   TilesetListRoute: typeof TilesetListRoute
   TilesocketCreateRoute: typeof TilesocketCreateRoute
   TilesocketListRoute: typeof TilesocketListRoute
+  TileDetailIdRoute: typeof TileDetailIdRoute
   TilegroupDetailIdRoute: typeof TilegroupDetailIdRoute
   TilesetDetailIdRoute: typeof TilesetDetailIdRoute
   TilesocketDetailIdRoute: typeof TilesocketDetailIdRoute
@@ -374,6 +395,7 @@ const rootRouteChildren: RootRouteChildren = {
   TilesetListRoute: TilesetListRoute,
   TilesocketCreateRoute: TilesocketCreateRoute,
   TilesocketListRoute: TilesocketListRoute,
+  TileDetailIdRoute: TileDetailIdRoute,
   TilegroupDetailIdRoute: TilegroupDetailIdRoute,
   TilesetDetailIdRoute: TilesetDetailIdRoute,
   TilesocketDetailIdRoute: TilesocketDetailIdRoute,
@@ -401,6 +423,7 @@ export const routeTree = rootRoute
         "/tileset/list",
         "/tilesocket/create",
         "/tilesocket/list",
+        "/tile/detail/$id",
         "/tilegroup/detail/$id",
         "/tileset/detail/$id",
         "/tilesocket/detail/$id"
@@ -441,6 +464,9 @@ export const routeTree = rootRoute
     },
     "/tilesocket/list": {
       "filePath": "tilesocket/list.tsx"
+    },
+    "/tile/detail/$id": {
+      "filePath": "tile/detail.$id.tsx"
     },
     "/tilegroup/detail/$id": {
       "filePath": "tilegroup/detail.$id.tsx"

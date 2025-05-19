@@ -16,5 +16,21 @@ class TileSocketListCreateView(generics.ListCreateAPIView):
         context = super().get_context_data(**kwargs)
         print('TileSocketListCreateView context:', context)
         return context
-    
-# TODO - get one tilesocket, update tilesocket, delete tilesocket
+
+class TileSocketDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = TileSocket.objects.all()
+    serializer_class = TileSocketSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_update(self, serializer):
+        serializer.save(updatedBy=self.request.user.username)
+
+    def get(self, request, *args, **kwargs):
+        tile_socket = self.get_object()
+        tile_socket_data = self.get_serializer(tile_socket).data
+
+        response_data = {
+            "tile_socket": tile_socket_data,
+        }
+
+        return Response(response_data)

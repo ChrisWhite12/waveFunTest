@@ -8,16 +8,21 @@ class TileSetListCreateView(generics.ListCreateAPIView[Tileset]):
     serializer_class = TilesetSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        user = self.request.user
+        # if query contains userId, filter by userId
+        userId = self.request.query_params.get('userId')
+        if userId:
+            return Tileset.objects.filter(createdBy=userId)
+        return Tileset.objects.all()
+
     def perform_create(self, serializer):
-        print('user in perform_create:', self.request.user)
         serializer.save(createdBy=self.request.user)
 
-class MyTilesetListView(generics.ListAPIView[Tileset]):
+class TileSetDetailView(generics.RetrieveUpdateDestroyAPIView[Tileset]):
+    queryset = Tileset.objects.all()
     serializer_class = TilesetSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        user = self.request.user
-        return Tileset.objects.filter(createdBy=user)
-    
-    # TODO - get one tileset, get tilesets, update tileset, delete tileset
+    def perform_update(self, serializer):
+        serializer.save(updatedBy=self.request.user)

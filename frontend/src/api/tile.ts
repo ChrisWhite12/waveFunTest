@@ -1,5 +1,14 @@
 import { axiosInstance } from "./axios";
 
+export interface Tile {
+    id: number;
+    name: string;
+    description: string;
+    image: string;
+    created_at: string;
+    updated_at: string;
+}
+
 export const createTile = async (data: FormData) => {
     try {
         const response = await axiosInstance.post('api/tiles/', data, {

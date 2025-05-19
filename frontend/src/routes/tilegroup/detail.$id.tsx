@@ -3,6 +3,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { getTileGroup } from '../../api'
 import { TileGroup } from './list'
 import { Stack } from '@mui/material'
+import { useEffect } from 'react'
 
 interface Tiles {
   id: number
@@ -25,9 +26,17 @@ export const Route = createFileRoute('/tilegroup/detail/$id')({
 function RouteComponent() {
   const { id } = Route.useParams()
   const { data: groupData } = useQuery<TileGroupDetail>({
-    queryKey: ['groupTiles'],
+    queryKey: ['groupTile', id],
     queryFn: () => getTileGroup(id),
   })
+
+  useEffect(() => {
+    console.log('groupData', groupData);
+  }, [groupData]);
+
+  if (!groupData) {
+    return <div>Loading...</div>
+  }
 
   return (
     <Stack spacing={2} direction='column'>

@@ -1,5 +1,8 @@
 import { Button, Stack } from '@mui/material'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { getTiles, Tile } from '../../api'
+import { useQuery } from '@tanstack/react-query'
+import ListCardItem from '../../components/ListCardItem'
 
 export const Route = createFileRoute('/tile/list')({
   component: RouteComponent,
@@ -12,6 +15,11 @@ function RouteComponent() {
     navigate({ to: '/tile/create' })
   }
 
+  const { data: tileData } = useQuery<Tile[]>({
+    queryKey: ['tiles'],
+    queryFn: () => getTiles(),
+  })
+
 
   return (
     <div>
@@ -21,6 +29,13 @@ function RouteComponent() {
               Create Tile
           </Button>
       </Stack>
+        <Stack spacing={2}>
+          {tileData?.map((tile) => (
+            <ListCardItem handleClick={() => navigate({ to: `/tile/detail/${tile.id}` })} key={tile.id}>
+              Tile ID: {tile.id}
+            </ListCardItem>
+          ))}
+        </Stack>
     </div>
   )
 }

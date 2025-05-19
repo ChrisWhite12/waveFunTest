@@ -1,5 +1,8 @@
 import { Button, Stack } from '@mui/material'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { getTileSets, TileSet } from '../../api'
+import { useQuery } from '@tanstack/react-query'
+import ListCardItem from '../../components/ListCardItem'
 
 export const Route = createFileRoute('/tileset/list')({
   component: RouteComponent,
@@ -7,6 +10,11 @@ export const Route = createFileRoute('/tileset/list')({
 
 function RouteComponent() {
   const navigate = useNavigate()
+
+  const { data: tilesetData } = useQuery<TileSet[]>({
+    queryKey: ['tilesets'],
+    queryFn: getTileSets,
+  })
 
   const handleCreate = () => {
     navigate({ to: '/tileset/create' })
@@ -20,6 +28,14 @@ function RouteComponent() {
           <Button variant='contained' onClick={handleCreate}>
               Create Tileset
           </Button>
+      </Stack>
+      <Stack spacing={2} direction='column'>
+        {tilesetData?.map((tileset) => (
+          <ListCardItem handleClick={() => navigate({ to: `/tileset/detail/${tileset.id}` })} key={tileset.id}>
+            <h3>Tileset ID: {tileset.id}</h3>
+            <p>Name: {tileset.name}</p>
+          </ListCardItem>
+        ))}
       </Stack>
     </div>
   )
