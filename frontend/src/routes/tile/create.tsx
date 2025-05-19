@@ -3,7 +3,7 @@
 import { Stack, Typography } from '@mui/material'
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
-import { getMyTileSets, getTileGroups } from '../../api/axios'
+import { getMyTileSets, getTileGroups } from '../../api'
 import TileSelector from '../../components/TileSelector'
 
 export const Route = createFileRoute('/tile/create')({

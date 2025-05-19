@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { getTileGroups } from '../../api/axios'
-import { Button, Card, Stack, Typography } from '@mui/material'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { getTileGroups } from '../../api'
+import { Button, Stack, Typography } from '@mui/material'
 import ListCardItem from '../../components/ListCardItem'
 
 export interface TileGroup {

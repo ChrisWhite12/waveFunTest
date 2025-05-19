@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
-import { getTileSockets } from "../../api/axios"
+import { getTileSockets } from "../../api"
 import { useQuery } from "@tanstack/react-query"
 import { Button, Stack } from "@mui/material"
 import ListCardItem from "../../components/ListCardItem"

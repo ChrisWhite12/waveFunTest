@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-import { getTileGroup } from '../../api/axios'
+import { getTileGroup } from '../../api'
 import { TileGroup } from './list'
 import { Stack } from '@mui/material'
 

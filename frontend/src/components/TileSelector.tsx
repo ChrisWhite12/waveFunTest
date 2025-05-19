@@ -1,7 +1,7 @@
 import { Box, Button, MenuItem, Select, SelectChangeEvent, Stack, TextField } from "@mui/material";
 import { MouseEvent, useCallback, useEffect, useRef, useState } from "react";
 import { putTile } from "./util"
-import { createTile, createTileGroup, getTileSockets } from "../api/axios";
+import { createTile, createTileGroup, getTileSockets } from "../api";
 import { useQuery } from "@tanstack/react-query";
 import SocketSelector from "./SocketSelector";
 
@@ -140,7 +140,7 @@ const TileSelector = ({data, groupData}: TileSelectorProps) => {
         formData.append('positionData', JSON.stringify(builderData));
         formData.append('socketData', JSON.stringify({}));
         try {
-            const response = await createTile(formData);
+            await createTile(formData);
         } catch (error) {
             console.error('Error creating tile:', error);
         }

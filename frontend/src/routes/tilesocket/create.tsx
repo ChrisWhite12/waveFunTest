@@ -1,7 +1,7 @@
 import { Button, Stack, TextField } from "@mui/material"
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
-import { createTileSocket } from "../../api/axios"
+import { createTileSocket } from "../../api"
 
 
 export const Route = createFileRoute('/tilesocket/create')({

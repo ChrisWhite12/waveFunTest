@@ -11,3 +11,5 @@ urlpatterns = [
     path("tiles/", views.TileCreateView.as_view(), name="tile-create"),
     path("tilesockets/", views.TileSocketListCreateView.as_view(), name="tilesocket-list-create"),
 ]
+
+# TODO - get one/many tileInfo, update tileInfo, delete tileInfo

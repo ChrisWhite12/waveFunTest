@@ -1,8 +1,8 @@
 import { Link, Stack, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
-import { axiosInstance } from "../api/axios";
 import { jwtDecode } from "jwt-decode";
+import { tokenRefresh } from "../api/auth";
 
 interface DecodedToken {
     user_id: string;
@@ -23,9 +23,12 @@ const HeaderNavigation = () => {
     const refreshToken = async () => {
         const refreshToken = localStorage.getItem(REFRESH_TOKEN);
         try {
-            const res = await axiosInstance.post("/api/token/refresh/", {
-                refresh: refreshToken,
-            });
+            if (!refreshToken) {
+                setIsAuthorized(false);
+                setUserId(null);
+                return;
+            }
+            const res = await tokenRefresh(refreshToken);
             if (res.status === 200) {
                 localStorage.setItem(ACCESS_TOKEN, res.data.access)
                 setIsAuthorized(true)

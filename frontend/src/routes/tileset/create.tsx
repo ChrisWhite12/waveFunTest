@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { createTileSet } from '../../api/axios';
+import { createTileSet } from '../../api';
 import React, { useEffect } from 'react';
 import { Stack, TextField } from '@mui/material';
 
