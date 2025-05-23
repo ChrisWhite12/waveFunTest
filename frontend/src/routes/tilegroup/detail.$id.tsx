@@ -1,16 +1,19 @@
 import { useQuery } from '@tanstack/react-query'
-import { createFileRoute } from '@tanstack/react-router'
-import { getTileGroup } from '../../api'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { deleteTileGroup, getTileGroup, updateTileGroup } from '../../api'
 import { TileGroup } from './list'
-import { Stack } from '@mui/material'
-import { useEffect } from 'react'
+import { Stack, TextField } from '@mui/material'
+import { useState } from 'react'
+import DeleteRow from '../../components/DeleteRow'
+import TileCard from '../../components/TileCard'
+import SaveRow from '../../components/SaveRow'
 
 interface Tiles {
   id: number
   tilesetId: number
   tileGroupId: number
   size: string
-  positionData: {x: number, y: number}[][];
+  positionData: { x: number, y: number }[][];
   socketData: any;
 }
 
@@ -29,10 +32,20 @@ function RouteComponent() {
     queryKey: ['groupTile', id],
     queryFn: () => getTileGroup(id),
   })
+  const [groupName, setGroupName] = useState(groupData?.tile_group.name || '')
 
-  useEffect(() => {
-    console.log('groupData', groupData);
-  }, [groupData]);
+  const navigate = useNavigate()
+
+  const handleDelete = async () => {
+    await deleteTileGroup(id)
+    navigate({ to: '/tilegroup/list' })
+  }
+
+  const handleSubmit = async () => {
+    const formData = new FormData()
+    formData.append('name', groupName)
+    await updateTileGroup(id, formData)
+  }
 
   if (!groupData) {
     return <div>Loading...</div>
@@ -41,20 +54,22 @@ function RouteComponent() {
   return (
     <Stack spacing={2} direction='column'>
       <h1>Tile Group Detail</h1>
+      <DeleteRow handleDelete={handleDelete} />
       <h2>{groupData?.tile_group.name}</h2>
-      <p>Tile ID: {groupData?.tile_group.id}</p>
-      <Stack spacing={2} direction='column'>
+      <TextField
+        label="Tile Group Name"
+        fullWidth
+        className="mb-4"
+        value={groupData?.tile_group.name}
+        onChange={(e => setGroupName(e.target.value))}
+      />
+      <p>ID: {groupData?.tile_group.id}</p>
+      <Stack spacing={2} direction='row' style={{ flexWrap: 'wrap', display: 'flex' }}>
         {groupData?.tiles.map((tile) => (
-          <Stack key={tile.id} spacing={2} direction='column'>
-            <h3>Tile ID: {tile.id}</h3>
-            <p>Tileset ID: {tile.tilesetId}</p>
-            <p>Tile Group ID: {tile.tileGroupId}</p>
-            <p>Size: {tile.size}</p>
-            <p>Position Data: {JSON.stringify(tile.positionData)}</p>
-            <p>Socket Data: {JSON.stringify(tile.socketData)}</p>
-          </Stack>
+            <TileCard tile={tile} key={tile.id} />
         ))}
       </Stack>
+      <SaveRow handleSave={handleSubmit} />
     </Stack>
   )
 }

@@ -36,12 +36,6 @@ function RouteComponent() {
         return <div>Loading...</div>
     }
 
-    // TODO add create button
-    // TODO add delete button
-    // TODO add edit link
-    // TODO add loading state
-    // TODO add error handling
-
     return (
         <div>
             <h1>List Tile Socket</h1>
@@ -52,7 +46,7 @@ function RouteComponent() {
             </Stack>
             <Stack spacing={2} direction='column'>
                 {data.map((socket) => (
-                    <ListCardItem key={socket.id} handleClick={handleClick}>
+                    <ListCardItem key={socket.id} handleClick={() => handleClick(socket.id.toString())}>
                             <h2>{socket.name}</h2>
                             <p>{socket.description}</p>
                     </ListCardItem>

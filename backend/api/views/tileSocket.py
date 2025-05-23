@@ -3,6 +3,7 @@ from ..serializer import TileSocketSerializer
 from rest_framework.permissions import IsAuthenticated
 from ..models import TileSocket
 from rest_framework import generics
+from rest_framework.response import Response
 
 class TileSocketListCreateView(generics.ListCreateAPIView):
     queryset = TileSocket.objects.all()
@@ -29,8 +30,4 @@ class TileSocketDetailView(generics.RetrieveUpdateDestroyAPIView):
         tile_socket = self.get_object()
         tile_socket_data = self.get_serializer(tile_socket).data
 
-        response_data = {
-            "tile_socket": tile_socket_data,
-        }
-
-        return Response(response_data)
+        return Response(tile_socket_data)

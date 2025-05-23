@@ -37,12 +37,6 @@ function RouteComponent() {
     return <Typography>Loading...</Typography>
   }
 
-  // TODO add create button
-  // TODO add delete button
-  // TODO add edit link
-  // TODO add loading state
-  // TODO add error handling
-
   return (
     <div>
       <h1>Tile Group List</h1>

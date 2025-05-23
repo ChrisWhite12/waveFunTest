@@ -3,8 +3,8 @@ import { MouseEvent, useCallback, useEffect, useRef, useState } from "react";
 import { putTile } from "./util"
 import { createTile, createTileGroup, getTileSockets } from "../api";
 import { useQuery } from "@tanstack/react-query";
-import SocketSelector from "./SocketSelector";
-import SocketGroup from "./SocketGroup";
+import { SocketDirection } from "./SocketSelector";
+import SocketGroup, { Socket } from "./SocketGroup";
 
 interface TileSet {
     id: number;
@@ -45,6 +45,16 @@ const TileSelector = ({ data, groupData }: TileSelectorProps) => {
     const [selectedTileSet, setSelectedTileSet] = useState<string>(options[0].value.toString());
     const [builderData, setBuilderData] = useState<Coords[][]>([]);
     const [selectedGroup, setSelectedGroup] = useState<string>('new');
+    const [socketData, setSocketData] = useState<Socket>({
+        top: Array.from({ length: tileBuildSize }, () => ''),
+        bottom: Array.from({ length: tileBuildSize }, () => ''),
+        left: Array.from({ length: tileBuildSize }, () => ''),
+        right: Array.from({ length: tileBuildSize }, () => ''),
+    });
+
+    useEffect(() => {
+        console.log('socketData', socketData);
+    }, [socketData]);
 
     const draw = () => {
         const canvas = document.getElementById('tileSelector') as HTMLCanvasElement;
@@ -139,7 +149,7 @@ const TileSelector = ({ data, groupData }: TileSelectorProps) => {
         formData.append('tileGroupId', id);
         formData.append('size', tileSize.toString());
         formData.append('positionData', JSON.stringify(builderData));
-        formData.append('socketData', JSON.stringify({}));
+        formData.append('socketData', JSON.stringify(socketData));
         try {
             await createTile(formData);
         } catch (error) {
@@ -219,7 +229,6 @@ const TileSelector = ({ data, groupData }: TileSelectorProps) => {
                         ))}
                     </Select>
                     <Stack direction={'row'} justifyContent={'center'}>
-                            {/* TODO center this */}
                             <canvas id="tileSelector" style={{ position: "absolute" }}></canvas>
                             <canvas id="selectSquare" onClick={handleTileClick} style={{ position: "absolute", zIndex: 1 }}></canvas>
                             <canvas id="tilePreview" width={tileSize} height={tileSize}></canvas>
@@ -250,6 +259,14 @@ const TileSelector = ({ data, groupData }: TileSelectorProps) => {
                             onClick={handleTileBuildClick}
                             width={tileSize * tileBuildSize}
                             height={tileSize * tileBuildSize}
+                            socketData={socketData}
+                            handleSocketChange={(direction: SocketDirection, index: number) => (value: string) => {
+                                setSocketData((prev) => {
+                                    const newData = { ...prev };
+                                    newData[direction][index] = value;
+                                    return newData;
+                                });
+                            }}
                         />
                     </Box>
                     <Stack>
