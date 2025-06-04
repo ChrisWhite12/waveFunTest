@@ -10,6 +10,7 @@ export const Route = createFileRoute('/tilesocket/detail/$id')({
   component: RouteComponent,
 })
 
+
 function RouteComponent() {
   const { id } = Route.useParams()
   const { data: socketData } = useQuery({
@@ -26,6 +27,7 @@ function RouteComponent() {
     formData.append('name', tileSocketName)
     formData.append('description', tileSocketDescription)
     await updateTileSocket(id,formData)
+    navigate({ to: '/tilesocket/list' })
   }
 
   const handleDelete = async () => {

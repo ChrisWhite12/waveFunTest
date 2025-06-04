@@ -4,11 +4,14 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { deleteTile, getTile, updateTile } from '../../api'
 import DeleteRow from '../../components/DeleteRow'
 import SaveRow from '../../components/SaveRow'
+import { useEffect } from 'react'
 
 export const Route = createFileRoute('/tile/detail/$id')({
   component: RouteComponent,
 })
 
+// TODO test edit - add fields
+// <TileSelector data={data} groupData={groupData} /> ?
 function RouteComponent() {
   const { id } = Route.useParams()
   const { data: tileData } = useQuery({
@@ -17,6 +20,10 @@ function RouteComponent() {
   })
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    console.log('tileData', tileData);
+  }, [tileData]);
 
   const handleDelete = async () => {
     await deleteTile(id)

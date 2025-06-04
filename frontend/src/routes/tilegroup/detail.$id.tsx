@@ -26,6 +26,7 @@ export const Route = createFileRoute('/tilegroup/detail/$id')({
   component: RouteComponent,
 })
 
+// TODO fix the tile card layout
 function RouteComponent() {
   const { id } = Route.useParams()
   const { data: groupData } = useQuery<TileGroupDetail>({

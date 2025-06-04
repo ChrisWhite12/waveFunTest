@@ -10,6 +10,7 @@ export const Route = createFileRoute('/tileset/detail/$id')({
   component: RouteComponent,
 })
 
+// TODO add tile size and image
 function RouteComponent() {
   const { id } = Route.useParams()
   const { data: tilesetData } = useQuery({
