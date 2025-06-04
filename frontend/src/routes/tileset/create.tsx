@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { createTileSet } from '../../api';
 import React, { useEffect } from 'react';
 import { Stack, TextField } from '@mui/material';
+import SaveRow from '../../components/SaveRow';
 
 export const Route = createFileRoute('/tileset/create')({
     component: TileSetCreate,
@@ -51,6 +52,22 @@ function TileSetCreate() {
         }
     }
 
+    const handleSubmit = async () => {
+        if (tileSetName && tileSetImage) {
+            const formData = new FormData();
+            formData.append('name', tileSetName);
+            formData.append('image', tileSetImage);
+            formData.append('tile_size', tileSize.toString());
+
+            try {
+                const response = await createTileSet(formData);
+                console.log('TileSet created:', response);
+            } catch (error) {
+                alert('Error creating TileSet');
+            }
+        }
+    }
+
     useEffect(() => {
         if (tileSetImage) {
             const reader = new FileReader();
@@ -62,14 +79,13 @@ function TileSetCreate() {
             };
             reader.readAsDataURL(tileSetImage);
         }
-        
+
     }, [tileSize, tileSetImage]);
 
     return (
         <Stack>
-            <h1 className="text-4xl font-bold mb-4">Create a New TileSet</h1>
             <Stack direction='row' spacing={2} className="p-4" alignItems={'center'} justifyContent={'space-between'}>
-                <Stack>
+                <Stack direction='column' spacing={2}>
                     <TextField
                         label="TileSet Name"
                         variant="outlined"
@@ -91,26 +107,7 @@ function TileSetCreate() {
                         onChange={handleImageUpload}
                         className="mb-4"
                     />
-                    <button
-                        onClick={async () => {
-                            if (tileSetName && tileSetImage) {
-                                const formData = new FormData();
-                                formData.append('name', tileSetName);
-                                formData.append('image', tileSetImage);
-                                formData.append('tile_size', tileSize.toString());
-
-                                try {
-                                    const response = await createTileSet(formData);
-                                    console.log('TileSet created:', response);
-                                } catch (error) {
-                                    alert('Error creating TileSet');
-                                }
-                            }
-                        }}
-                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                    >
-                        Create TileSet
-                    </button>
+                    <SaveRow handleSave={handleSubmit} />
                 </Stack>
                 <Stack>
                     <canvas
