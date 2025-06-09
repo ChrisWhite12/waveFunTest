@@ -15,6 +15,7 @@ import { Route as TilebuilderImport } from './routes/tilebuilder'
 import { Route as GeneratorImport } from './routes/generator'
 import { Route as RegisterImport } from './routes/Register'
 import { Route as LoginImport } from './routes/Login'
+import { Route as IndexImport } from './routes/index'
 import { Route as TilesocketListImport } from './routes/tilesocket/list'
 import { Route as TilesocketCreateImport } from './routes/tilesocket/create'
 import { Route as TilesetListImport } from './routes/tileset/list'
@@ -51,6 +52,12 @@ const RegisterRoute = RegisterImport.update({
 const LoginRoute = LoginImport.update({
   id: '/Login',
   path: '/Login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const IndexRoute = IndexImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -130,6 +137,13 @@ const TileDetailIdRoute = TileDetailIdImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
     '/Login': {
       id: '/Login'
       path: '/Login'
@@ -248,6 +262,7 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/Login': typeof LoginRoute
   '/Register': typeof RegisterRoute
   '/generator': typeof GeneratorRoute
@@ -267,6 +282,7 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/Login': typeof LoginRoute
   '/Register': typeof RegisterRoute
   '/generator': typeof GeneratorRoute
@@ -287,6 +303,7 @@ export interface FileRoutesByTo {
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
+  '/': typeof IndexRoute
   '/Login': typeof LoginRoute
   '/Register': typeof RegisterRoute
   '/generator': typeof GeneratorRoute
@@ -308,6 +325,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/Login'
     | '/Register'
     | '/generator'
@@ -326,6 +344,7 @@ export interface FileRouteTypes {
     | '/tilesocket/detail/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/Login'
     | '/Register'
     | '/generator'
@@ -344,6 +363,7 @@ export interface FileRouteTypes {
     | '/tilesocket/detail/$id'
   id:
     | '__root__'
+    | '/'
     | '/Login'
     | '/Register'
     | '/generator'
@@ -364,6 +384,7 @@ export interface FileRouteTypes {
 }
 
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   GeneratorRoute: typeof GeneratorRoute
@@ -383,6 +404,7 @@ export interface RootRouteChildren {
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   GeneratorRoute: GeneratorRoute,
@@ -411,6 +433,7 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
+        "/",
         "/Login",
         "/Register",
         "/generator",
@@ -428,6 +451,9 @@ export const routeTree = rootRoute
         "/tileset/detail/$id",
         "/tilesocket/detail/$id"
       ]
+    },
+    "/": {
+      "filePath": "index.tsx"
     },
     "/Login": {
       "filePath": "Login.jsx"
