@@ -176,9 +176,7 @@ const TileSelector = ({ data, groupData }: TileSelectorProps) => {
     useEffect(() => {
         const canvas = document.getElementById('selectSquare') as HTMLCanvasElement;
         const ctx = canvas.getContext('2d');
-        const previewCanvas = document.getElementById('tilePreview') as HTMLCanvasElement;
-        const previewCtx = previewCanvas.getContext('2d');
-        if (!ctx || !previewCtx) {
+        if (!ctx) {
             return;
         }
         // Clear the canvas
@@ -228,10 +226,10 @@ const TileSelector = ({ data, groupData }: TileSelectorProps) => {
                             </MenuItem>
                         ))}
                     </Select>
+                    {/* TODO - use TileSetCanvas and implement the tileClick */}
                     <Stack direction={'row'} justifyContent={'center'}>
                             <canvas id="tileSelector" style={{ position: "absolute" }}></canvas>
                             <canvas id="selectSquare" onClick={handleTileClick} style={{ position: "absolute", zIndex: 1 }}></canvas>
-                            <canvas id="tilePreview" width={tileSize} height={tileSize}></canvas>
                     </Stack>
                 </Stack>
                 <Stack spacing={2} sx={{ flex: 1 }}>

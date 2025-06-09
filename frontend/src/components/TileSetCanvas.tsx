@@ -3,7 +3,6 @@ import { Stack } from "@mui/material";
 import { useEffect, useRef } from "react";
 
 interface TileSetCanvasProps {
-    // Define any props you need here
     imgUrl: string;
     tileSize: number;
 }
