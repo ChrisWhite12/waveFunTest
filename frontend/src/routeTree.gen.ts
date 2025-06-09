@@ -11,7 +11,6 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as TilebuilderImport } from './routes/tilebuilder'
 import { Route as GeneratorImport } from './routes/generator'
 import { Route as RegisterImport } from './routes/Register'
 import { Route as LoginImport } from './routes/Login'
@@ -30,12 +29,6 @@ import { Route as TilegroupDetailIdImport } from './routes/tilegroup/detail.$id'
 import { Route as TileDetailIdImport } from './routes/tile/detail.$id'
 
 // Create/Update Routes
-
-const TilebuilderRoute = TilebuilderImport.update({
-  id: '/tilebuilder',
-  path: '/tilebuilder',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const GeneratorRoute = GeneratorImport.update({
   id: '/generator',
@@ -165,13 +158,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GeneratorImport
       parentRoute: typeof rootRoute
     }
-    '/tilebuilder': {
-      id: '/tilebuilder'
-      path: '/tilebuilder'
-      fullPath: '/tilebuilder'
-      preLoaderRoute: typeof TilebuilderImport
-      parentRoute: typeof rootRoute
-    }
     '/tile/create': {
       id: '/tile/create'
       path: '/tile/create'
@@ -266,7 +252,6 @@ export interface FileRoutesByFullPath {
   '/Login': typeof LoginRoute
   '/Register': typeof RegisterRoute
   '/generator': typeof GeneratorRoute
-  '/tilebuilder': typeof TilebuilderRoute
   '/tile/create': typeof TileCreateRoute
   '/tile/list': typeof TileListRoute
   '/tilegroup/create': typeof TilegroupCreateRoute
@@ -286,7 +271,6 @@ export interface FileRoutesByTo {
   '/Login': typeof LoginRoute
   '/Register': typeof RegisterRoute
   '/generator': typeof GeneratorRoute
-  '/tilebuilder': typeof TilebuilderRoute
   '/tile/create': typeof TileCreateRoute
   '/tile/list': typeof TileListRoute
   '/tilegroup/create': typeof TilegroupCreateRoute
@@ -307,7 +291,6 @@ export interface FileRoutesById {
   '/Login': typeof LoginRoute
   '/Register': typeof RegisterRoute
   '/generator': typeof GeneratorRoute
-  '/tilebuilder': typeof TilebuilderRoute
   '/tile/create': typeof TileCreateRoute
   '/tile/list': typeof TileListRoute
   '/tilegroup/create': typeof TilegroupCreateRoute
@@ -329,7 +312,6 @@ export interface FileRouteTypes {
     | '/Login'
     | '/Register'
     | '/generator'
-    | '/tilebuilder'
     | '/tile/create'
     | '/tile/list'
     | '/tilegroup/create'
@@ -348,7 +330,6 @@ export interface FileRouteTypes {
     | '/Login'
     | '/Register'
     | '/generator'
-    | '/tilebuilder'
     | '/tile/create'
     | '/tile/list'
     | '/tilegroup/create'
@@ -367,7 +348,6 @@ export interface FileRouteTypes {
     | '/Login'
     | '/Register'
     | '/generator'
-    | '/tilebuilder'
     | '/tile/create'
     | '/tile/list'
     | '/tilegroup/create'
@@ -388,7 +368,6 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   GeneratorRoute: typeof GeneratorRoute
-  TilebuilderRoute: typeof TilebuilderRoute
   TileCreateRoute: typeof TileCreateRoute
   TileListRoute: typeof TileListRoute
   TilegroupCreateRoute: typeof TilegroupCreateRoute
@@ -408,7 +387,6 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   GeneratorRoute: GeneratorRoute,
-  TilebuilderRoute: TilebuilderRoute,
   TileCreateRoute: TileCreateRoute,
   TileListRoute: TileListRoute,
   TilegroupCreateRoute: TilegroupCreateRoute,
@@ -437,7 +415,6 @@ export const routeTree = rootRoute
         "/Login",
         "/Register",
         "/generator",
-        "/tilebuilder",
         "/tile/create",
         "/tile/list",
         "/tilegroup/create",
@@ -463,9 +440,6 @@ export const routeTree = rootRoute
     },
     "/generator": {
       "filePath": "generator.tsx"
-    },
-    "/tilebuilder": {
-      "filePath": "tilebuilder.tsx"
     },
     "/tile/create": {
       "filePath": "tile/create.tsx"

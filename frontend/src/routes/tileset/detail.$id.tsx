@@ -4,13 +4,14 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { deleteTileSet, getTileSet, updateTileSet } from '../../api'
 import DeleteRow from '../../components/DeleteRow'
 import SaveRow from '../../components/SaveRow'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
+import TileSetCanvas from '../../components/TileSetCanvas'
 
 export const Route = createFileRoute('/tileset/detail/$id')({
   component: RouteComponent,
 })
 
-// TODO add tile size and image
+// TODO fix image display issue on input
 function RouteComponent() {
   const { id } = Route.useParams()
   const { data: tilesetData } = useQuery({
@@ -20,40 +21,14 @@ function RouteComponent() {
   const navigate = useNavigate()
   const [tilesetName, setTileSetName] = useState(tilesetData?.name || '')
   const [tileSize, setTileSize] = useState(8)
-  const [tileSetImage, setTileSetImage] = useState<File | null>(null);
-  const tileAtlas = useRef(new Image());
+  const [tileSetImage, setTileSetImage] = useState<string | null>(null);
 
-  const draw = (size: number) => {
-    console.log('draw');
-    const canvas = document.getElementById('canvas') as HTMLCanvasElement;
-    const context = canvas.getContext('2d');
-    canvas.width = tileAtlas.current.width;
-    canvas.height = tileAtlas.current.height;
-    if (context) {
-      context.drawImage(tileAtlas.current, 0, 0);
-    }
-    for (let x = 0; x < tileAtlas.current.width; x += size) {
-      context?.beginPath();
-      context?.moveTo(x, 0);
-      context?.lineTo(x, tileAtlas.current.height);
-      context?.stroke();
-    }
-
-    for (let y = 0; y < tileAtlas.current.height; y += size) {
-      context?.beginPath();
-      context?.moveTo(0, y);
-      context?.lineTo(tileAtlas.current.width, y);
-      context?.stroke();
-    }
-  };
-
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setTileSetImage(file);
-      draw(tileSize)
-    }
-  }
+  // const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   if (file) {
+  //     setTileSetImage(file.name);
+  //   }
+  // }
 
   const handleTileSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newSize = parseInt(event.target.value)
@@ -79,24 +54,15 @@ function RouteComponent() {
     if (tilesetData) {
       setTileSetName(tilesetData.name)
       setTileSize(tilesetData.tile_size || 8)
-      // TODO fix image display issue
+      if (tilesetData.image) {
+        const imageName = tilesetData.image;
+        setTileSetImage(imageName);
+      } else {
+        setTileSetImage(null);
+      }
     }
   }, [tilesetData]);
 
-  useEffect(() => {
-    console.log('tileSetImage', tileSetImage);
-    if (tileSetImage) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        tileAtlas.current.src = e.target?.result as string;
-        tileAtlas.current.onload = () => {
-          draw(tileSize);
-        }
-      };
-      reader.readAsDataURL(tileSetImage);
-    }
-
-  }, [tileSize, tileSetImage]);
 
   return (
     <Stack spacing={2} direction='column'>
@@ -120,25 +86,20 @@ function RouteComponent() {
             className="mb-4"
             onChange={handleTileSizeChange}
           />
-          <input
+          {/* <input
             type="file"
             accept="image/*"
             onChange={handleImageUpload}
             className="mb-4"
-            value={tileSetImage ? tileSetImage.name : ''} // Display file name if selected
-          />
+            value={tileSetImage ?? ''} // Display file name if selected
+          /> */}
           <SaveRow handleSave={handleSubmit} />
         </Stack>
         <Stack>
-          <canvas
-            id="canvas"
-            width="500"
-            height="500"
-            style={{
-              border: '1px solid black',
-              marginTop: '20px',
-            }}
-          ></canvas>
+          <TileSetCanvas
+            imgUrl={tileSetImage ?? ''}
+            tileSize={tileSize}
+          />
         </Stack>
       </Stack>
     </Stack>
