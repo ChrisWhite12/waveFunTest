@@ -1,8 +1,9 @@
-import { Button, Stack } from '@mui/material'
+import { Stack } from '@mui/material'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { getTiles, Tile } from '../../api'
 import { useQuery } from '@tanstack/react-query'
 import ListCardItem from '../../components/ListCardItem'
+import ActionRow from '../../components/buttons/ActionRow'
 
 export const Route = createFileRoute('/tile/list')({
   component: RouteComponent,
@@ -25,9 +26,7 @@ function RouteComponent() {
     <div>
       <h1>Tile List</h1>
       <Stack spacing={2} direction='row' justifyContent='end' sx={{ py: 2 }}>
-          <Button variant='contained' onClick={handleCreate}>
-              Create Tile
-          </Button>
+          <ActionRow handleClick={handleCreate} variant='Create' />
       </Stack>
         <Stack spacing={2}>
           {tileData?.map((tile) => (

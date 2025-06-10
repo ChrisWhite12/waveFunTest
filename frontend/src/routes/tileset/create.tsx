@@ -2,8 +2,8 @@ import { createFileRoute } from '@tanstack/react-router';
 import { createTileSet } from '../../api';
 import React from 'react';
 import { Stack, TextField } from '@mui/material';
-import SaveRow from '../../components/SaveRow';
 import TileSetCanvas from '../../components/TileSetCanvas';
+import ActionRow from '../../components/buttons/ActionRow';
 
 export const Route = createFileRoute('/tileset/create')({
     component: TileSetCreate,
@@ -69,7 +69,7 @@ function TileSetCreate() {
                         onChange={handleImageUpload}
                         className="mb-4"
                     />
-                    <SaveRow handleSave={handleSubmit} />
+                    <ActionRow handleClick={handleSubmit} variant='Create' />
                 </Stack>
                 <Stack>
                     <TileSetCanvas

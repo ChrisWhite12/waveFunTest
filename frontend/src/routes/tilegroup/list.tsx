@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { getTileGroups } from '../../api'
-import { Button, Stack, Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import ListCardItem from '../../components/ListCardItem'
+import ActionRow from '../../components/buttons/ActionRow'
 
 export interface TileGroup {
   id: number
@@ -41,9 +42,7 @@ function RouteComponent() {
     <div>
       <h1>Tile Group List</h1>
       <Stack spacing={2} direction='row' justifyContent='end' sx={{ py: 2 }}>
-          <Button variant='contained' onClick={handleCreate}>
-              Create Tile Group
-          </Button>
+          <ActionRow handleClick={handleCreate} variant='Create' />
       </Stack>
       <Stack spacing={2} direction='column'>
         {groupData?.map((group) => (

@@ -2,11 +2,11 @@ import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { deleteTileGroup, getTileGroup, updateTileGroup } from '../../api'
 import { TileGroup } from './list'
-import { Stack, TextField } from '@mui/material'
+import { Grid2, Stack, TextField } from '@mui/material'
 import { useState } from 'react'
-import DeleteRow from '../../components/DeleteRow'
 import TileCard from '../../components/TileCard'
-import SaveRow from '../../components/SaveRow'
+import ActionRow from '../../components/buttons/ActionRow'
+import CreateCard from '../../components/CreateCard'
 
 interface Tiles {
   id: number
@@ -55,7 +55,7 @@ function RouteComponent() {
   return (
     <Stack spacing={2} direction='column'>
       <h1>Tile Group Detail</h1>
-      <DeleteRow handleDelete={handleDelete} />
+      <ActionRow handleClick={handleDelete} variant='Delete' />
       <h2>{groupData?.tile_group.name}</h2>
       <TextField
         label="Tile Group Name"
@@ -65,12 +65,17 @@ function RouteComponent() {
         onChange={(e => setGroupName(e.target.value))}
       />
       <p>ID: {groupData?.tile_group.id}</p>
-      <Stack spacing={2} direction='row' style={{ flexWrap: 'wrap', display: 'flex' }}>
+        <Grid2 container spacing={2} style={{ flexWrap: 'wrap', display: 'flex' }}>
         {groupData?.tiles.map((tile) => (
-            <TileCard tile={tile} key={tile.id} />
+          <Grid2 size={3} key={tile.id} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <TileCard tile={tile} />
+          </Grid2>
         ))}
-      </Stack>
-      <SaveRow handleSave={handleSubmit} />
+        <Grid2 size={3} sx={{ display: 'flex', justifyContent: 'center' }}>
+          <CreateCard />
+          </Grid2>
+        </Grid2>
+      <ActionRow handleClick={handleSubmit} variant='Save' />
     </Stack>
   )
 }

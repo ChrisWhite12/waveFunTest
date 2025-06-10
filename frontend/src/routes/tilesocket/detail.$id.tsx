@@ -3,8 +3,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 import { deleteTileSocket, getTileSocket, updateTileSocket } from '../../api'
 import { useQuery } from '@tanstack/react-query'
-import DeleteRow from '../../components/DeleteRow'
-import SaveRow from '../../components/SaveRow'
+import ActionRow from '../../components/buttons/ActionRow'
 
 export const Route = createFileRoute('/tilesocket/detail/$id')({
   component: RouteComponent,
@@ -26,7 +25,7 @@ function RouteComponent() {
     const formData = new FormData()
     formData.append('name', tileSocketName)
     formData.append('description', tileSocketDescription)
-    await updateTileSocket(id,formData)
+    await updateTileSocket(id, formData)
     navigate({ to: '/tilesocket/list' })
   }
 
@@ -45,7 +44,7 @@ function RouteComponent() {
   return (
     <div>
       <h1>Tile Socket Detail</h1>
-      <DeleteRow handleDelete={handleDelete} />
+      <ActionRow handleClick={handleDelete} variant='Delete' />
       <Stack spacing={2} direction='column'>
         <TextField
           label="Tile Socket Name"
@@ -64,7 +63,7 @@ function RouteComponent() {
           value={tileSocketDescription}
           onChange={(e) => setTileSocketDescription(e.target.value)}
         />
-        <SaveRow handleSave={handleSubmit} />
+        <ActionRow handleClick={handleSubmit} variant='Save' />
       </Stack>
     </div>
   )

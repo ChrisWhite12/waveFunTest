@@ -2,10 +2,9 @@ import { Stack, TextField, Typography } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { deleteTileSet, getTileSet, updateTileSet } from '../../api'
-import DeleteRow from '../../components/DeleteRow'
-import SaveRow from '../../components/SaveRow'
 import { useEffect, useState } from 'react'
 import TileSetCanvas from '../../components/TileSetCanvas'
+import ActionRow from '../../components/buttons/ActionRow'
 
 export const Route = createFileRoute('/tileset/detail/$id')({
   component: RouteComponent,
@@ -66,7 +65,7 @@ function RouteComponent() {
 
   return (
     <Stack spacing={2} direction='column'>
-      <DeleteRow handleDelete={handleDelete} />
+      <ActionRow handleClick={handleDelete} variant='Delete' />
       <Stack direction='row' spacing={2} className="p-4" alignItems={'center'} justifyContent={'space-between'}>
         <Stack direction='column' spacing={2}>
           <Typography>Tileset ID: {tilesetData?.id}</Typography>
@@ -93,7 +92,7 @@ function RouteComponent() {
             className="mb-4"
             value={tileSetImage ?? ''} // Display file name if selected
           /> */}
-          <SaveRow handleSave={handleSubmit} />
+          <ActionRow handleClick={handleSubmit} variant='Save' />
         </Stack>
         <Stack>
           <TileSetCanvas

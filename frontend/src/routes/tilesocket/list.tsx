@@ -1,8 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { getTileSockets } from "../../api"
 import { useQuery } from "@tanstack/react-query"
-import { Button, Stack } from "@mui/material"
+import { Stack } from "@mui/material"
 import ListCardItem from "../../components/ListCardItem"
+import ActionRow from "../../components/buttons/ActionRow"
 
 interface TileSocket {
     id: number
@@ -40,9 +41,7 @@ function RouteComponent() {
         <div>
             <h1>List Tile Socket</h1>
             <Stack spacing={2} direction='row' justifyContent='end' sx={{ py: 2 }}>
-                <Button variant='contained' onClick={handleCreate}>
-                    Create Tile Socket
-                </Button>
+                <ActionRow handleClick={handleCreate} variant='Create' />
             </Stack>
             <Stack spacing={2} direction='column'>
                 {data.map((socket) => (

@@ -1,10 +1,11 @@
-import { Box, Button, MenuItem, Select, SelectChangeEvent, Stack, TextField } from "@mui/material";
+import { Box, MenuItem, Select, SelectChangeEvent, Stack, TextField } from "@mui/material";
 import { MouseEvent, useCallback, useEffect, useRef, useState } from "react";
 import { putTile } from "./util"
 import { createTile, createTileGroup, getTileSockets } from "../api";
 import { useQuery } from "@tanstack/react-query";
 import { SocketDirection } from "./SocketSelector";
 import SocketGroup, { Socket } from "./SocketGroup";
+import ActionRow from "./buttons/ActionRow";
 
 interface TileSet {
     id: number;
@@ -268,9 +269,7 @@ const TileSelector = ({ data, groupData }: TileSelectorProps) => {
                         />
                     </Box>
                     <Stack>
-                        <Button variant="contained" onClick={handleSave}>
-                            Save Tile
-                        </Button>
+                        <ActionRow handleClick={handleSave} variant="Save" />
                     </Stack>
                 </Stack>
             </Stack>

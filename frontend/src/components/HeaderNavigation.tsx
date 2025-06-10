@@ -6,9 +6,6 @@ const HeaderNavigation = () => {
 
     return (
         <Stack direction="row" spacing={2} justifyContent={'space-around'}>
-            <Link href="/tile/list" className="[&.active]:font-bold">
-                Tile
-            </Link>
             <Link href="/tileset/list" className="[&.active]:font-bold">
                 TileSet
             </Link>

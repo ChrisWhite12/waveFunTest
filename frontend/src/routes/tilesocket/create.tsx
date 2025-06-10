@@ -1,7 +1,8 @@
-import { Button, Stack, TextField } from "@mui/material"
+import { Stack, TextField } from "@mui/material"
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
 import { createTileSocket } from "../../api"
+import ActionRow from "../../components/buttons/ActionRow"
 
 
 export const Route = createFileRoute('/tilesocket/create')({
@@ -41,13 +42,7 @@ function RouteComponent() {
                     onChange={(e) => setTileSocketDescription(e.target.value)}
                 />
 
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSubmit}
-                >
-                    Create
-                </Button>
+                <ActionRow handleClick={handleSubmit} variant='Create' />
             </Stack>
         </div>
     )
